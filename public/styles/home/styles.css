@@ -14,11 +14,27 @@ body{
 
 h1{
     text-align: center;
-    font-size: 5em;
+    font-size: 10em;
     font-weight: 700;
     font-family: "Sansita+Swashe",system-ui;
 }
 
 button{
-    margin: 2em;
+    margin: 1em;
+    border-radius: 40px 10px;
+    background: gold;
+}
+
+button li{
+    padding-top: 3em;
+    padding-bottom: 3em;
+    border-radius: 40px 10px;
+    background: rgb(151, 255, 122);
+}
+
+button li a{
+    text-transform: none;
+    text-decoration: none;
+    color:aliceblue;
+    border-radius: 10px;
 }
