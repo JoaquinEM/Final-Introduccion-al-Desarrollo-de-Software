@@ -1,0 +1,42 @@
+html{
+    box-sizing: border-box;
+}
+
+*{
+    box-sizing: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color: rgb(33, 152, 255);
+}
+
+h1{
+    text-align: center;
+    font-size: 10em;
+    font-weight: 700;
+    font-family: "Sansita+Swashe",system-ui;
+    margin-bottom: 0.2em;
+    background-color: rgb(3, 120, 215);
+    border-bottom-left-radius: 70px;
+    border-bottom-right-radius: 70px;
+}
+
+.tabla {
+    display: block;
+    text-align: center;
+}
+
+.tabla button{
+    display: inline-block;
+    background-color: transparent;
+    border-color: aliceblue;
+    margin: 0 0;
+    border: 1px solid;
+    height: 224px;
+    width: 224px;
+    font-size: 10em;
+    padding: 50px;
+    text-align: center;
+}
