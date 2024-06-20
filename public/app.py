@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from models import db, Jugador
 
 app = Flask(__name__)
@@ -10,9 +10,23 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 def hello_world():
     return 'Hello World'
 
-@app.route('/estadisticas')
-def mostrar_estadisticas():
-    return 'Hello worlld'
+@app.route('/estadisticas', methods=['GET'])
+def get_estadisticas():
+    try:
+        jugadores = Jugador.query.all()
+        jugadores_data = []
+        for jugador in jugadores:
+            jugador_data = {
+                'id': jugador.id,
+                'descripcion': jugador.descripcion, 
+                'fecha_partida': jugador.fecha_partida
+            }
+            jugadores_data.append(jugador_data)
+        return jsonify({'jugadores': jugadores_data})
+    except Exception as error:
+        print('Error', error)
+        return jsonify({'message:', 'Internal error server'}), 500
+
 
 if __name__ == '__main__':
     print('Starting server...')
