@@ -18,8 +18,10 @@ def get_estadisticas():
         for jugador in jugadores:
             jugador_data = {
                 'id': jugador.id,
-                'descripcion': jugador.descripcion, 
-                'fecha_partida': jugador.fecha_partida
+                'descripcion': jugador.descripcion,
+                'partidas_ganadas': jugador.partidas_ganadas,
+                'partidas_perdidas': jugador.partidas_perdidas, 
+                'fecha_ultima_partida': jugador.fecha_ultima_partida
             }
             jugadores_data.append(jugador_data)
         return jsonify({'jugadores': jugadores_data})
