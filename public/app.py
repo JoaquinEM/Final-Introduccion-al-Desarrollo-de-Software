@@ -31,7 +31,7 @@ def get_estadisticas():
         print('Error', error)
         return jsonify({'message:', 'Internal error server'}), 500
 
-@app.route('/jugador', methods=['POST'])
+@app.route('/jugadores', methods=['POST'])
 def nuevo_jugador():
     try:
         data = request.json
@@ -48,7 +48,23 @@ def nuevo_jugador():
                                     'fecha_ultima_partida': None}}), 201 
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el jugador'}), 500
+    
+@app.route('/jugadores/<id_jugador>', methods=['GET'])
+def jugador(id_jugador):
+    try:
+        jugador = Jugador.query.get(id_jugador)
 
+        jugador_data = {
+            'id': jugador.id,
+            'nombre': jugador.nombre,
+            'partidas_ganadas': jugador.partidas_ganadas,
+            'partidas_perdidas': jugador.partidas_perdidas, 
+            'fecha_creacion': jugador.fecha_creacion,
+            'fecha_ultima_partida': jugador.fecha_ultima_partida
+        }
+        return jsonify(jugador_data)
+    except:
+        return jsonify({'mensaje': 'El jugador no existe'})
 
 
 
