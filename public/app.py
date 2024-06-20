@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+import datetime
+from flask import Flask, request, jsonify
 from models import db, Jugador
 
 app = Flask(__name__)
@@ -18,9 +19,10 @@ def get_estadisticas():
         for jugador in jugadores:
             jugador_data = {
                 'id': jugador.id,
-                'descripcion': jugador.descripcion,
+                'nombre': jugador.nombre,
                 'partidas_ganadas': jugador.partidas_ganadas,
                 'partidas_perdidas': jugador.partidas_perdidas, 
+                'fecha_creacion': jugador.fecha_creacion,
                 'fecha_ultima_partida': jugador.fecha_ultima_partida
             }
             jugadores_data.append(jugador_data)
@@ -28,6 +30,26 @@ def get_estadisticas():
     except Exception as error:
         print('Error', error)
         return jsonify({'message:', 'Internal error server'}), 500
+
+@app.route('/jugador', methods=['POST'])
+def nuevo_jugador():
+    try:
+        data = request.json
+        nuevo_nombre = data.get('nombre')
+        nuevo_jugador = Jugador(nombre=nuevo_nombre, partidas_ganadas=0, partidas_perdidas=0,
+                                fecha_creacion = datetime.datetime.now(), 
+                                fecha_ultima_partida=None)
+        db.session.add(nuevo_jugador)
+        db.session.commit
+        return jsonify({'jugador': {'id': nuevo_jugador.id, 'nombre': nuevo_jugador.nombre, 
+                                    'partidas_ganadas': 0, 
+                                    'partidas_perdidas': 0, 
+                                    'fecha_creacion': datetime.datetime.now(),  
+                                    'fecha_ultima_partida': None}}), 201 
+    except Exception as error:
+        return jsonify({'mensaje': 'no se pudo crear el jugador'}), 500
+
+
 
 
 if __name__ == '__main__':
