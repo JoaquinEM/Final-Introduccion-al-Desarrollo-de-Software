@@ -1,3 +1,6 @@
+@import url(../../base/colores.css);
+@import url(../../base/fonts.css);
+
 html{
     box-sizing: border-box;
 }
@@ -9,19 +12,59 @@ html{
 }
 
 body{
-    background-color: rgb(33, 152, 255);
+    background-color: var(--celeste);
+}
+/*
+header{
+    height: 11rem;
+
+    background-color: var(--azul);
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+
+}
+
+header section{
+    padding: 1rem;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+header section article{
+    width: 100%;
+}
+
+header section article nav{
+    display: flex;
+    justify-content: space-around;
+
+    
+}
+nav li{
+    list-style: none;
+}
+
+.link{
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.link:hover{
+    text-decoration: underline;
 }
 
 h1{
-    text-align: center;
-    font-size: 10em;
+    text-align:  center;
+    font-size: 2rem;
     font-weight: 700;
     font-family: "Sansita+Swashe",system-ui;
-    margin-bottom: 1em;
-    background-color: rgb(3, 120, 215);
-    border-bottom-left-radius: 70px;
-    border-bottom-right-radius: 70px;
 }
+*/
 
 .boton{
     display: block;
