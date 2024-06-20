@@ -1,6 +1,6 @@
 @import url(../base/colores.css);
 
-header{
+.Header{
     height: 11rem;
 
     background-color: var(--azul);
@@ -9,7 +9,7 @@ header{
 
 }
 
-header section{
+.Header section{
     padding: 1rem;
     height: 100%;
 
@@ -19,11 +19,11 @@ header section{
     justify-content: space-around;
 }
 
-header section article{
+.Header section article{
     width: 100%;
 }
 
-header section article nav{
+.Header section article nav{
     display: flex;
     justify-content: space-evenly;
 

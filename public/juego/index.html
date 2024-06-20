@@ -7,31 +7,94 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Sansita+Swashed:wght@300..900&display=swap" rel="stylesheet">
+    
     <title>Ta-Te-Ti</title>
-    <link rel="stylesheet" href="../styles/css.juego/juego.css">
+    
+    <link rel="stylesheet" href="../styles/layout/header.css">
+    <link rel="stylesheet" href="../styles/pages/juego/juego.css">
+
 </head>
 <body onload="agregarO(0)">
-    <header>
+    <header class="Header">
         <section>
             <article>
-                <h1>Partida</h1>
+                <h1>TA-TE-TI</h1>
             </article>
-            <div class="tabla">
-            <div class="primerLinea">
-                <button name="equis" id="0" onclick="agregarX(0)" value="Disponible">*</button><button name="equis" id="1" onclick="agregarX(1)" value="Disponible">*</button><button name="equis" id="2" onclick="agregarX(2)" value="Disponible">*</button>
-            </div>
-            <div class="segundaLinea">
-                <button name="equis" id="3" onclick="agregarX(3)" value="Disponible">*</button><button name="equis" id="4" onclick="agregarX(4)" value="Disponible">*</button><button name="equis" id="5" onclick="agregarX(5)" value="Disponible">*</button>
-            </div>
-            <div class="tercerLinea">
-                <button name="equis" id="6" onclick="agregarX(6)" value="Disponible"><p>*</p></button><button name="equis" id="7" onclick="agregarX(7)" value="Disponible">*</button><button name="equis" id="8" onclick="agregarX(8)" value="Disponible">*</button>
-            </div>
-            </div>
+            <article>
+                <nav>
+                    <li><a class="link"  href="../index.html">Home</a></li>
+                    <li><a class="link" href="../estadisticas/index.html">Estadisticas</a></li>
+
+                </nav>
+            </article>
         </section>
     </header>
-    <main></main>
+    <main>
+        <section>
+
+            <header>
+                <h2>Partida</h2>
+            </header>
+            
+           
+            <main id="partida">
+               <article>
+                    
+                    <button onclick="nuevaPartida()">Nueva Partida</button>
+               </article>
+            
+               <div id="partida_en_curso">
+                    
+                    <!--Aca se van a cargar las partidas-->
+               </div>
+            </main>
+
+        
+            <!--
+            <div class="tabla">
+
+                    <button name="equis" id="0" onclick="agregarX(0)" value="Disponible">*</button>
+                    <button name="equis" id="1" onclick="agregarX(1)" value="Disponible">*</button>
+                    <button name="equis" id="2" onclick="agregarX(2)" value="Disponible">*</button>
+
+                    <button name="equis" id="3" onclick="agregarX(3)" value="Disponible">*</button>
+                    <button name="equis" id="4" onclick="agregarX(4)" value="Disponible">*</button>
+                    <button name="equis" id="5" onclick="agregarX(5)" value="Disponible">*</button>
+   
+                    <button name="equis" id="6" onclick="agregarX(6)" value="Disponible">*</button>
+                    <button name="equis" id="7" onclick="agregarX(7)" value="Disponible">*</button>
+                    <button name="equis" id="8" onclick="agregarX(8)" value="Disponible">*</button>
+                
+            </div>
+            -->
+        </section>
+    </main>
+
     <aside></aside>
     <footer></footer>
+
+    <script>
+            let partidaCount = 0;
+
+            function nuevaPartida() {
+                partidaCount++;
+                const partidaHTML = `
+                    <div class="tabla" id="partida_en_curso${partidaCount}">
+                        
+                        <button name="equis" id="0" onclick="agregarX(0, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="1" onclick="agregarX(1, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="2" onclick="agregarX(2, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="3" onclick="agregarX(3, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="4" onclick="agregarX(4, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="5" onclick="agregarX(5, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="6" onclick="agregarX(6, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="7" onclick="agregarX(7, ${partidaCount})" value="Disponible">*</button>
+                        <button name="equis" id="8" onclick="agregarX(8, ${partidaCount})" value="Disponible">*</button>
+                    </div>`;
+                document.getElementById('partida').innerHTML += partidaHTML;
+            }
+    </script>
+
     <script src="juego.js"></script>
 </body>
 </html>
