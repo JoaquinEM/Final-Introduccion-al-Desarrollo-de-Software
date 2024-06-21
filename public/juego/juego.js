@@ -48,9 +48,19 @@ function agregarO(veces){
 
 function agregarX(id){
     let casilla = document.getElementById(`${id}`)
-    casilla.innerText = "X"
-    casilla.setAttribute("value", "Cerrado")
-    agregarO(0)
-    comprobarGanador("x")
-    comprobarGanador("o")
+    let estado_casilla = casilla.getAttribute('value')
+
+
+    if (estado_casilla !== "Cerrado") {
+        casilla.innerText = "X"
+        casilla.setAttribute("value", "Cerrado")
+
+        agregarO(0)
+        comprobarGanador("x")
+        comprobarGanador("o")
+    }
+    
+
 }
+
+
