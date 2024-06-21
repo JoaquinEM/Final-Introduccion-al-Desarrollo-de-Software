@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 def hello_world():
     return 'Hello World'
 
+
 @app.route('/estadisticas', methods=['GET'])
 def get_estadisticas():
     try:
@@ -26,10 +27,10 @@ def get_estadisticas():
                 'fecha_ultima_partida': jugador.fecha_ultima_partida
             }
             jugadores_data.append(jugador_data)
-        return jsonify({'jugadores': jugadores_data})
+        return jsonify({'jugadores': jugadores_data}), 201
     except Exception as error:
-        print('Error', error)
         return jsonify({'message:', 'Internal error server'}), 500
+
 
 @app.route('/jugadores', methods=['POST'])
 def nuevo_jugador():
@@ -49,6 +50,7 @@ def nuevo_jugador():
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el jugador'}), 500
     
+
 @app.route('/jugadores/<id_jugador>', methods=['GET'])
 def jugador(id_jugador):
     try:
@@ -63,9 +65,40 @@ def jugador(id_jugador):
             'fecha_ultima_partida': jugador.fecha_ultima_partida
         }
         return jsonify(jugador_data)
-    except:
-        return jsonify({'mensaje': 'El jugador no existe'})
+    except Exception as error:
+        return jsonify({'mensaje': 'El jugador no existe'}), 500
+    
 
+@app.route('/jugadores/<id_jugador>/partidas_ganadas', methods=['POST'])
+def actualizar_partidas_ganadas(id_jugador):
+    try:
+        jugador = Jugador.query.get(id_jugador)
+
+        jugador.partidas_ganadas+=1
+        jugador.fecha_ultima_partida = datetime.datetime.now()
+
+        db.session.add(jugador)
+        db.session.commit()
+
+        return jsonify({'partidas_ganadas': jugador.partidas_ganadas}), 201
+    except Exception as error: 
+        return jsonify({'mensaje': 'El jugador no se pudo actualizar'}), 500
+
+
+@app.route('/jugadores/<id_jugador>/partidas_perdidas', methods=['POST'])
+def actualizar_partidas_perdidas(id_jugador):
+    try:
+        jugador = Jugador.query.get(id_jugador)
+
+        jugador.partidas_perdidas+=1
+        jugador.fecha_ultima_partida = datetime.datetime.now()
+
+        db.session.add(jugador)
+        db.session.commit()
+
+        return jsonify({'partidas_perdidas': jugador.partidas_perdidas}), 201
+    except Exception as error: 
+        return jsonify({'mensaje': 'El jugador no se pudo actualizar'}), 500          
 
 
 if __name__ == '__main__':
