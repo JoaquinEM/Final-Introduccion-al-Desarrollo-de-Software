@@ -74,25 +74,7 @@
     <footer></footer>
 
     <script>
-            let partidaCount = 0;
 
-            function nuevaPartida() {
-                partidaCount++;
-                const partidaHTML = `
-                    <div class="tabla" id="partida_en_curso${partidaCount}">
-                        
-                        <button name="equis" id="0" onclick="agregarCruz(0, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="1" onclick="agregarCruz(1, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="2" onclick="agregarCruz(2, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="3" onclick="agregarCruz(3, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="4" onclick="agregarCruz(4, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="5" onclick="agregarCruz(5, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="6" onclick="agregarCruz(6, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="7" onclick="agregarCruz(7, ${partidaCount})" value="disponible">*</button>
-                        <button name="equis" id="8" onclick="agregarCruz(8, ${partidaCount})" value="disponible">*</button>
-                    </div>`;
-                document.getElementById('partida').innerHTML += partidaHTML;
-            }
     </script>
 
     <script src="juego.js"></script>

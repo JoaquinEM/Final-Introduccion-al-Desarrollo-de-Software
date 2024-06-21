@@ -1,9 +1,36 @@
-
 let CRUZ = "X"
 let CIRCULO = "O"
 let VACIO = "-"
 let estado_inicial = "disponible"
 let estado_final = "ocupado"
+
+let partidaCount = 0; // el contador de partidas quizas nos sirve para las estadisticas
+
+function nuevaPartida() {
+    partidaCount++;
+    if (partidaCount > 1){
+        borrarPartidaAnterior()
+    }
+    
+    const partidaHTML = `
+        <div class="tabla" id="partida_en_curso${partidaCount}">
+            
+            <button name="equis" id="0" onclick="agregarCruz(0, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="1" onclick="agregarCruz(1, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="2" onclick="agregarCruz(2, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="3" onclick="agregarCruz(3, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="4" onclick="agregarCruz(4, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="5" onclick="agregarCruz(5, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="6" onclick="agregarCruz(6, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="7" onclick="agregarCruz(7, ${partidaCount})" value="disponible">*</button>
+            <button name="equis" id="8" onclick="agregarCruz(8, ${partidaCount})" value="disponible">*</button>
+        </div>`;
+    document.getElementById('partida_en_curso').innerHTML += partidaHTML;
+}
+
+function borrarPartidaAnterior(){
+    document.getElementById('partida_en_curso').innerHTML = "";
+}
 
 function comprobador(tablero,ganador,arranque,suma){
 
@@ -104,8 +131,8 @@ function agregarCruz(id){
 function terminarJuego(ganador) {
     console.log("El juego ha terminado")
     console.log(`GANÓ: ${ganador}`)
-    // Aquí puedes agregar cualquier lógica adicional para finalizar el juego,
-    // como deshabilitar el tablero, mostrar un mensaje, etc.
+    // Aca tenemos que agregar lógica adicional para finalizar el juego,
+    // como deshabilitar el tablero, mostrar un mensaje, mandar datos a estadisticas, etc.
 }
 
 function todasCasillasOcupadas(tablero) {
@@ -130,35 +157,3 @@ function verificarEstadoJuego(tablero) {
 
     console.log("El juego continúa")
 }
-
-
-
-// --------------- FUNCION ANTIGUA DE AGREGAR CIRCULO--------------
-/* 
-function agregarCirculo(veces){
-    let posicion = Math.floor(Math.random() * 9)
-    let casillas = document.getElementsByName("equis")
-    
-    if (casillas[posicion].getAttribute("value") === estado_final){
-        veces += 1
-        if (veces >= 9){
-            verificarEstadoJuego(obtenerTablero())
-            return true //no hay movimientos disponibles
-        }else{
-            return agregarCirculo(veces)
-        }
-        
-       
-    }
-    for (let casilla = 0; casilla < 9; casilla++){
-        if (casillas[casilla].getAttribute("value") == estado_inicial && casillas[casilla].getAttribute("id") == posicion){
-            casillas[casilla].innerText = CIRCULO
-            casillas[casilla].setAttribute("value",estado_final)
-            let tablero = obtenerTablero()
-            verificarEstadoJuego(obtenerTablero())
-            return false
-        }
-    }
-    
-}
-*/
