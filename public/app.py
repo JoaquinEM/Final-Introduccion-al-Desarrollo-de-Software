@@ -24,7 +24,8 @@ def get_estadisticas():
                 'partidas_ganadas': jugador.partidas_ganadas,
                 'partidas_perdidas': jugador.partidas_perdidas, 
                 'fecha_creacion': jugador.fecha_creacion,
-                'fecha_ultima_partida': jugador.fecha_ultima_partida
+                'fecha_ultima_partida': jugador.fecha_ultima_partida,
+                'ultimo_contrincante': jugador.ultimo_contrincante
             }
             jugadores_data.append(jugador_data)
         return jsonify({'jugadores': jugadores_data}), 201
@@ -39,14 +40,15 @@ def nuevo_jugador():
         nuevo_nombre = data.get('nombre')
         nuevo_jugador = Jugador(nombre=nuevo_nombre, partidas_ganadas=0, partidas_perdidas=0,
                                 fecha_creacion = datetime.datetime.now(), 
-                                fecha_ultima_partida=None)
+                                fecha_ultima_partida=None, ultimo_contrincante=None)
         db.session.add(nuevo_jugador)
         db.session.commit
         return jsonify({'jugador': {'id': nuevo_jugador.id, 'nombre': nuevo_jugador.nombre, 
                                     'partidas_ganadas': 0, 
                                     'partidas_perdidas': 0, 
                                     'fecha_creacion': datetime.datetime.now(),  
-                                    'fecha_ultima_partida': None}}), 201 
+                                    'fecha_ultima_partida': None,
+                                    'ultimo_contrincante:': None}}), 201 
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el jugador'}), 500
     
@@ -62,7 +64,8 @@ def jugador(id_jugador):
             'partidas_ganadas': jugador.partidas_ganadas,
             'partidas_perdidas': jugador.partidas_perdidas, 
             'fecha_creacion': jugador.fecha_creacion,
-            'fecha_ultima_partida': jugador.fecha_ultima_partida
+            'fecha_ultima_partida': jugador.fecha_ultima_partida,
+            'ultimo_contrincante': jugador.ultimo_contrincante
         }
         return jsonify(jugador_data)
     except Exception as error:
@@ -70,12 +73,13 @@ def jugador(id_jugador):
     
 
 @app.route('/jugadores/<id_jugador>/partidas_ganadas', methods=['POST'])
-def actualizar_partidas_ganadas(id_jugador):
+def actualizar_partidas_ganadas(id_jugador, nombre_contrincante):
     try:
         jugador = Jugador.query.get(id_jugador)
 
         jugador.partidas_ganadas+=1
         jugador.fecha_ultima_partida = datetime.datetime.now()
+        jugador.ultimo_contrincante = nombre_contrincante
 
         db.session.add(jugador)
         db.session.commit()
@@ -86,12 +90,13 @@ def actualizar_partidas_ganadas(id_jugador):
 
 
 @app.route('/jugadores/<id_jugador>/partidas_perdidas', methods=['POST'])
-def actualizar_partidas_perdidas(id_jugador):
+def actualizar_partidas_perdidas(id_jugador, nombre_contrincante):
     try:
         jugador = Jugador.query.get(id_jugador)
 
         jugador.partidas_perdidas+=1
         jugador.fecha_ultima_partida = datetime.datetime.now()
+        jugador.ultimo_contrincante = nombre_contrincante
 
         db.session.add(jugador)
         db.session.commit()

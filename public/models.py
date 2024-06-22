@@ -11,3 +11,4 @@ class Jugador(db.model):
     partidas_perdidas = db.Column(db.Integer, nullable=False) 
     fecha_creacion = db.Column(db.Datetime, default=datetime.datetime.now())
     fecha_ultima_partida = db.Column(db.Datetime, default=datetime.datetime.now())
+    ultimo_contrincante = db.Column(db.String(255), nullable=True)
