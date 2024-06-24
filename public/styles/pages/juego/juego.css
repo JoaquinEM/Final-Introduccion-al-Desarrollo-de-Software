@@ -62,3 +62,24 @@ h2{
     text-align: center;
     color:rgb(3, 120, 215);
 }
+
+#botonPartida{
+    width: 10em;
+    height: 5em;
+    text-align: center;
+    border: 0.3em solid;
+    border-color:  rgb(3, 120, 215);
+    border-radius: 2em;
+    border-top-left-radius: 10em;
+    border-bottom-right-radius: 10em;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+#botonPartida:hover{
+    width: 15em;
+    height: 5em;
+    border-radius: 1em;
+    border-top-right-radius: 10em;
+    border-bottom-left-radius: 10em;
+}

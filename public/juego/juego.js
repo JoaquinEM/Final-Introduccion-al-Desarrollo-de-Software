@@ -7,6 +7,7 @@ let estado_final = "ocupado"
 let partidaCount = 0; // el contador de partidas quizas nos sirve para las estadisticas
 
 function nuevaPartida() {
+    console.log(Date.parse())
     partidaCount++;
     if (partidaCount > 1){
         borrarPartidaAnterior()
@@ -26,6 +27,7 @@ function nuevaPartida() {
             <button name="equis" id="8" onclick="agregarCruz(8, ${partidaCount})" value="disponible">*</button>
         </div>`;
     document.getElementById('partida_en_curso').innerHTML += partidaHTML;
+    document.getElementById('estadistica').innerHTML = "";
 }
 
 function borrarPartidaAnterior(){
@@ -129,8 +131,16 @@ function agregarCruz(id){
 }
 
 function terminarJuego(ganador) {
-    console.log("El juego ha terminado")
-    console.log(`GANÓ: ${ganador}`)
+    if (ganador == "X"){
+        ganador = "¡Ganaste!"}
+    else if (ganador == "O"){
+        ganador = "¡Perdiste!"}
+    else {ganador = "¡Empate!"}
+    const estadisticaHTML = `
+        <br></br>
+        <h1>Partida Finalizada ${ganador}</h1>`;
+    document.getElementById("estadistica").innerHTML = estadisticaHTML;
+    console.log(document.getElementById("estadistica").innerHTML)
     // Aca tenemos que agregar lógica adicional para finalizar el juego,
     // como deshabilitar el tablero, mostrar un mensaje, mandar datos a estadisticas, etc.
 }
