@@ -50,7 +50,21 @@ def nuevo_Usuario():
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el usuario'}), 500
     
- 
+
+@app.route('/usuarios/<nombre_usuario>', methods=['GET'])
+def usuario(nombre_usuario):
+    try:
+        usuario = Usuario.query.get(nombre_usuario)
+
+        usuario_data = {
+            'nombre_usuario': usuario.nombre_usuario,
+            'contraseña_usuario': usuario.contraseña_usuario
+        }
+        return jsonify(usuario_data), 201
+    except Exception as error:
+        return jsonify({'mensaje': 'El usuario no existe'}), 500
+
+
 @app.route('/jugadores', methods=['POST'])
 def nuevo_jugador():
     try:
@@ -85,7 +99,7 @@ def jugador(id_jugador):
             'fecha_ultima_partida': jugador.fecha_ultima_partida,
             'ultimo_contrincante': jugador.ultimo_contrincante
         }
-        return jsonify(jugador_data)
+        return jsonify(jugador_data), 201
     except Exception as error:
         return jsonify({'mensaje': 'El jugador no existe'}), 500
     
