@@ -1,6 +1,6 @@
 import datetime
 from flask import Flask, request, jsonify
-from models import db, Jugador
+from models import db, Jugador, Usuario
 
 app = Flask(__name__)
 port = 5000
@@ -33,6 +33,24 @@ def get_estadisticas():
         return jsonify({'message:', 'Internal error server'}), 500
 
 
+@app.route('/usuarios', methods=['POST'])
+def nuevo_Usuario():
+    try:
+        data = request.json
+        nombre_usuario = data.get('nombre')
+        contraseña_usuario = data.get('contraseña')
+        nuevo_usuario = Usuario(nombre_usuario=nombre_usuario, 
+                                contraseña_usuario=contraseña_usuario,
+                                fecha_creacion = datetime.datetime.now())
+        db.session.add(nuevo_usuario)
+        db.session.commit
+        return jsonify({'usuario': {'nombre_usuario': nuevo_usuario.nombre_usuario,
+                                    'contraseña_usuario': nuevo_usuario.contraseña_usuario,
+                                    'fecha_creacion': datetime.datetime.now()}}), 201 
+    except Exception as error:
+        return jsonify({'mensaje': 'no se pudo crear el usuario'}), 500
+    
+ 
 @app.route('/jugadores', methods=['POST'])
 def nuevo_jugador():
     try:
