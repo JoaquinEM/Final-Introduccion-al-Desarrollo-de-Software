@@ -44,9 +44,10 @@ def nuevo_Usuario():
                                 fecha_creacion = datetime.datetime.now())
         db.session.add(nuevo_usuario)
         db.session.commit
-        return jsonify({'usuario': {'nombre_usuario': nuevo_usuario.nombre_usuario,
+        return jsonify({'usuario': {'id': nuevo_usuario.id,
+                                    'nombre_usuario': nuevo_usuario.nombre_usuario,
                                     'contraseña_usuario': nuevo_usuario.contraseña_usuario,
-                                    'fecha_creacion': datetime.datetime.now()}}), 201 
+                                    'fecha_creacion': nuevo_usuario.fecha_creacion}}), 201 
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el usuario'}), 500
     
@@ -57,28 +58,32 @@ def usuario(nombre_usuario):
         usuario = Usuario.query.get(nombre_usuario)
 
         usuario_data = {
+            'id_usuario': usuario.id,
             'nombre_usuario': usuario.nombre_usuario,
-            'contraseña_usuario': usuario.contraseña_usuario
+            'contraseña_usuario': usuario.contraseña_usuario,
+            'fecha_creacion': usuario.fecha_creacion
         }
         return jsonify(usuario_data), 201
     except Exception as error:
         return jsonify({'mensaje': 'El usuario no existe'}), 500
 
 
-@app.route('/jugadores', methods=['POST'])
-def nuevo_jugador():
+@app.route('/usuarios/<id_usuario>', methods=['POST'])
+def nuevo_jugador(id_usuario):
     try:
         data = request.json
         nuevo_nombre = data.get('nombre')
-        nuevo_jugador = Jugador(nombre=nuevo_nombre, partidas_ganadas=0, partidas_perdidas=0,
+        nuevo_jugador = Jugador(id_usuario=id_usuario , nombre=nuevo_nombre, partidas_ganadas=0, partidas_perdidas=0,
                                 fecha_creacion = datetime.datetime.now(), 
                                 fecha_ultima_partida=None, ultimo_contrincante=None)
         db.session.add(nuevo_jugador)
         db.session.commit
-        return jsonify({'jugador': {'id': nuevo_jugador.id, 'nombre': nuevo_jugador.nombre, 
+        return jsonify({'jugador': {'id': nuevo_jugador.id,
+                                    'id_usuario': nuevo_jugador.id_usuario, 
+                                    'nombre': nuevo_jugador.nombre, 
                                     'partidas_ganadas': 0, 
                                     'partidas_perdidas': 0, 
-                                    'fecha_creacion': datetime.datetime.now(),  
+                                    'fecha_creacion': nuevo_jugador.fecha_creacion,  
                                     'fecha_ultima_partida': None,
                                     'ultimo_contrincante:': None}}), 201 
     except Exception as error:
@@ -92,6 +97,7 @@ def jugador(id_jugador):
 
         jugador_data = {
             'id': jugador.id,
+            'id_usuario': jugador.id_usuario,
             'nombre': jugador.nombre,
             'partidas_ganadas': jugador.partidas_ganadas,
             'partidas_perdidas': jugador.partidas_perdidas, 
@@ -104,7 +110,7 @@ def jugador(id_jugador):
         return jsonify({'mensaje': 'El jugador no existe'}), 500
     
 
-@app.route('/jugadores/<id_jugador>/partidas_ganadas', methods=['POST'])
+@app.route('/jugadores/<id_jugador>/partidas_ganadas/<nombre_contrincante>', methods=['POST'])
 def actualizar_partidas_ganadas(id_jugador, nombre_contrincante):
     try:
         jugador = Jugador.query.get(id_jugador)
@@ -121,7 +127,7 @@ def actualizar_partidas_ganadas(id_jugador, nombre_contrincante):
         return jsonify({'mensaje': 'El jugador no se pudo actualizar'}), 500
 
 
-@app.route('/jugadores/<id_jugador>/partidas_perdidas', methods=['POST'])
+@app.route('/jugadores/<id_jugador>/partidas_perdidas/<nombre_contrincante>', methods=['POST'])
 def actualizar_partidas_perdidas(id_jugador, nombre_contrincante):
     try:
         jugador = Jugador.query.get(id_jugador)
