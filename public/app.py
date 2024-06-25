@@ -68,6 +68,15 @@ def usuario(nombre_usuario):
         return jsonify({'mensaje': 'El usuario no existe'}), 500
 
 
+@app.route('usuarios/<id_usuario>', methods=['DELETE'])
+def eliminar_usuario(id_usuario):
+    try:
+        Usuario.query.filter_by(id=id_usuario).delete()
+        return {'mensaje': 'El usuario se ha eliminado'}, 201
+    except Exception as error:
+        return {'mensaje': 'No se pudo eliminar el usuario'}, 500
+
+
 @app.route('/usuarios/<id_usuario>', methods=['POST'])
 def nuevo_jugador(id_usuario):
     try:
