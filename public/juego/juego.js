@@ -164,6 +164,17 @@ function verificarEstadoJuego(tablero) {
         terminarJuego("Empate")
         return
     }
-
     console.log("El juego continúa")
+    return "cierre"
+}
+
+function confirmarVolver(){
+    let tablero = obtenerTablero()
+    if (verificarEstadoJuego(tablero) == "cierre") {
+        let cierre = window.confirm("¿Desea abandonar la partida? Se perderá todo el progreso.")
+        if (cierre){
+            window.location.href = "../index.html"
+            return
+        }
+    }else{window.location.href = "../index.html"}
 }
