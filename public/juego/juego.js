@@ -58,6 +58,10 @@ function obtenerTablero(){
     let tablero = inicializacionJuego()
 
     let casilla = document.getElementsByName("equis")
+    console.log(casilla.length)
+    if (casilla.length == 0){
+        return false
+    }
     
     for (let posicion = 0; posicion < 9; posicion++){
         if (casilla[posicion].innerText == CRUZ){
@@ -170,6 +174,8 @@ function verificarEstadoJuego(tablero) {
 
 function confirmarVolver(){
     let tablero = obtenerTablero()
+    if (!tablero){window.location.href = "../index.html";return}
+
     if (verificarEstadoJuego(tablero) == "cierre") {
         let cierre = window.confirm("¿Desea abandonar la partida? Se perderá todo el progreso.")
         if (cierre){
