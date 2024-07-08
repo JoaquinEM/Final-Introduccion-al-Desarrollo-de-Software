@@ -24,7 +24,31 @@
         </section>
     </header>
     <main>
+        <!-- Formulario de Login -->
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="login-username">Usuario:</label>
+                <input type="text" id="login-username" name="username" required>
+                <label for="login-password">Contraseña:</label>
+                <input type="password" id="login-password" name="password" required>
+                <button type="submit">Iniciar sesión</button>
+            </form>
+            <div id="login-message"></div>
+        </section>
 
+        <!-- Formulario de Signup -->
+        <section id="signup-section">
+            <h2>Registro</h2>
+            <form id="signup-form">
+                <label for="signup-username">Usuario:</label>
+                <input type="text" id="signup-username" name="username" required>
+                <label for="signup-password">Contraseña:</label>
+                <input type="password" id="signup-password" name="password" required>
+                <button type="submit">Registrarse</button>
+            </form>
+            <div id="signup-message"></div>
+        </section>
     </main>
     <aside>
 
@@ -32,5 +56,7 @@
     <footer>
         
     </footer>
+
+    <script src="./scripts/login.js"></script>
 </body>
 </html>

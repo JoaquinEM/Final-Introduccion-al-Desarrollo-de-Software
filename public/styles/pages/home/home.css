@@ -15,38 +15,4 @@ body{
     background-color: var(--celeste);
 }
 
-/*
-.boton{
-    display: block;
-    text-align: center;
-    margin-top: 7em;
-}
-
-button{
-    width: 40em;
-    height: 15em;
-    text-align: center;
-    border: 0.3em solid;
-    border-color:  rgb(3, 120, 215);
-    border-radius: 2em;
-    border-top-left-radius: 10em;
-    border-bottom-right-radius: 10em;
-    cursor: pointer;
-    transition: all 0.4s ease;
-}
-
-button:hover{
-    width: 45em;
-    height: 20em;
-    border-radius: 2em;
-    border-top-right-radius: 10em;
-    border-bottom-left-radius: 10em;
-}
-
-button a{
-    text-decoration: none;
-    font-size: 5em;
-    text-align: center;
-    color: rgb(3, 120, 215);
-}
-*/
+/*Seccion LOGIN*/
