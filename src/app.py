@@ -25,7 +25,7 @@ def login():
     if usuario:
         # Si el usuario existe, verifica la contraseña
         if usuario.contraseña_usuario == contraseña:
-            return jsonify({'message': 'Login exitoso'}), 200
+            return jsonify({'message': 'Login exitoso', 'idUsuario': usuario.id}), 200
         else:
             return jsonify({'message': 'Credenciales incorrectas'}), 401
     else:
@@ -57,7 +57,7 @@ def nuevo_Usuario():
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el usuario'}), 500
     
-
+"""
 @app.route('/usuarios/<nombre_usuario>', methods=['GET'])
 def usuario(nombre_usuario):
     try:
@@ -72,7 +72,7 @@ def usuario(nombre_usuario):
         return jsonify(usuario_data), 201
     except Exception as error:
         return jsonify({'mensaje': 'El usuario no existe'}), 500
-
+"""
 
 @app.route('/usuarios/<id_usuario>', methods=['DELETE'])
 def eliminar_usuario(id_usuario):
@@ -82,6 +82,25 @@ def eliminar_usuario(id_usuario):
     except Exception as error:
         return {'mensaje': 'No se pudo eliminar el usuario'}, 500
 
+
+@app.route('/usuarios/<int:idUsuario>/juegos/<string:nombreJuego>', methods=['GET'])
+def obtener_juego(idUsuario, nombreJuego):
+    try:
+        juego = JuegosDelUsuario.query.filter_by(id_usuario=idUsuario, nombre_juego=nombreJuego).first()
+        if juego:
+            
+            return jsonify({
+                'id': juego.id,
+                'nombre_juego': juego.nombre_juego,
+                'id_usuario': juego.id_usuario,
+                'partidas_ganadas': juego.partidas_ganadas,
+                'partidas_perdidas': juego.partidas_perdidas,
+                'partidas_empatadas': juego.partidas_empatadas
+            }), 200
+        else:
+            return jsonify({'message': 'Juego no encontrado'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/estadisticas', methods=['GET'])
 def get_estadisticas():
@@ -103,6 +122,8 @@ def get_estadisticas():
         partidas = PartidasJuegosUsuario.query.all()
         partidas_data = []
         for partida in partidas:
+
+            
             partida_data = {
                 'id': partida.id,
                 'id_juego': partida.nombre_juego,
@@ -116,103 +137,133 @@ def get_estadisticas():
         return jsonify({'juegos': juegos_data, 'partidas': partidas_data}), 201
     except Exception as error:
         return jsonify({'message:', 'No se pueden recuperar las estadisticas de los usuarios'}), 500
-      
-        
-@app.route('/jugar/<id_usuario>', methods=['POST'])
-def nuevo_juego(id_usuario):
-    try:
-        data = request.json
-        nombre_juego = data.get('nombre')
-        nuevo_juego = JuegosDelUsuario(id_usuario=id_usuario , 
-                                       nombre_juego=nombre_juego, 
-                                       partidas_ganadas=0, 
-                                       partidas_perdidas=0, 
-                                       partidas_empatadas=0)
-        db.session.add(nuevo_juego)
-        db.session.commit
 
-        nueva_partida = PartidasJuegosUsuario(id_usuario=id_usuario, id_juego=nuevo_juego.id,
-                                              inicio_partida=datetime.datetime.now())
-        
-        return jsonify({'juego': 
-                        {'id': nuevo_juego.id,
-                        'nombre_juego': nuevo_juego.nombre_juego,
-                        'id_usuario': nuevo_juego.id_usuario,
-                        'partidas_ganadas': nuevo_juego.partidas_ganadas, 
-                        'partidas_perdidas': nuevo_juego.partidas_perdidas,
-                        'partidas_empatadas': nuevo_juego.partidas_empatadas}, 
-                        'partida':
-                        {'id': nueva_partida.id,
-                         'id_juego': nueva_partida.id_juego,
-                         'id_usuario': nueva_partida.id_usuario,
-                         'inicio_partida': nueva_partida.inicio_partida,
-                         'final_partida': nueva_partida.final_partida,
-                         'estado_partida': 'En Juego'}}), 201 
-    except Exception as error:
-        return jsonify({'mensaje': 'no se pudo crear el juego'}), 500
+
+@app.route('/usuarios/<int:idUsuario>/juegos/<nombreJuego>', methods=['POST', 'GET'])
+def juegos_usuario(idUsuario, nombreJuego):
+    if request.method == 'POST':
+        try:
+            juego_existente = JuegosDelUsuario.query.filter_by(id_usuario=idUsuario, nombre_juego=nombreJuego).first()
+            
+            if juego_existente:
+                return jsonify({
+                    'mensaje': 'El juego ya existe para este usuario',
+                    'idUsuario': juego_existente.id_usuario,
+                    'nombreJuego': juego_existente.nombre_juego,
+                    'partidasGanadas': juego_existente.partidas_ganadas,
+                    'partidasPerdidas': juego_existente.partidas_perdidas,
+                    'partidasEmpatadas': juego_existente.partidas_empatadas
+                }), 200
+            else:
+                # Crear un nuevo juego para el usuario
+                nuevo_juego = JuegosDelUsuario(
+                    id_usuario=idUsuario,
+                    nombre_juego=nombreJuego,
+                    partidas_ganadas=0,
+                    partidas_perdidas=0,
+                    partidas_empatadas=0
+                )
+                db.session.add(nuevo_juego)
+                db.session.commit()
+
+                return jsonify({
+                    'mensaje': 'Juego creado para el usuario',
+                    'idUsuario': nuevo_juego.id_usuario,
+                    'nombreJuego': nuevo_juego.nombre_juego,
+                    'partidasGanadas': nuevo_juego.partidas_ganadas,
+                    'partidasPerdidas': nuevo_juego.partidas_perdidas,
+                    'partidasEmpatadas': nuevo_juego.partidas_empatadas
+                }), 201
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+    elif request.method == 'GET':
+        try:
+            juego = JuegosDelUsuario.query.filter_by(id_usuario=idUsuario, nombre_juego=nombreJuego).first()
+            if juego:
+                return jsonify({
+                    'idUsuario': juego.id_usuario,
+                    'nombreJuego': juego.nombre_juego,
+                    'partidasGanadas': juego.partidas_ganadas,
+                    'partidasPerdidas': juego.partidas_perdidas,
+                    'partidasEmpatadas': juego.partidas_empatadas
+                }), 200
+            else:
+                return jsonify({}), 404
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
+
+@app.route('/jugar/<int:idUsuario>', methods=['POST'])
+def jugar(idUsuario):
+    data = request.get_json()
+    nombreJuego = data.get('nombreJuego')
+
+    # Busco el juego del usuario por nombre
+    juego = JuegosDelUsuario.query.filter_by(id_usuario=idUsuario, nombre_juego=nombreJuego).first()
+
+    if not juego:
+        # Si el juego no existe para el usuario, lo creo
+        juego = JuegosDelUsuario(nombre_juego=nombreJuego, id_usuario=idUsuario, partidas_ganadas=0, partidas_perdidas=0, partidas_empatadas=0)
+        db.session.add(juego)
+        db.session.commit()
+
+    # Creo la nueva partida asociada al juego encontrado o creado
+    partida = PartidasJuegosUsuario(id_juego=juego.id, id_usuario=idUsuario,nombre_juego = nombreJuego, estado_partida = 'pendiente')
+    db.session.add(partida)
+    db.session.commit()
+
+    return jsonify({
+        'id_partida': partida.id,
+        'id_juego': juego.id,
+        'id_usuario': idUsuario,
+        'nombre_juego': nombreJuego,
+        'estado_partida': partida.estado_partida,
+        'inicio_partida': partida.inicio_partida,
+        'final_partida': partida.final_partida
+    })
+
+
+@app.route('/finalizar_partida/<int:id_partida>', methods=['POST'])
+def finalizar_partida(id_partida):
+    data = request.get_json()
+    estado = data.get('estado')
+    id_usuario = data.get('id_usuario')
+    nombre_juego = data.get('nombre_juego')
+
+    partida = db.session.get(PartidasJuegosUsuario, id_partida)
+    if not partida:
+        return jsonify({'message': 'Partida no encontrada'}), 404
     
+    partida.estado_partida = estado
+    partida.final_partida = datetime.datetime.now()
 
-@app.route('/jugadores/<id_jugador>/partidas_ganadas', methods=['POST'])
-def actualizar_partidas_ganadas(id_jugador):
-    try:
-        juego = JuegosDelUsuario.query.get(id_jugador)
+    juego = JuegosDelUsuario.query.filter_by(id_usuario=id_usuario, nombre_juego=nombre_juego).first()
+    if not juego:
+        return jsonify({'message': 'Juego no encontrado'}), 404
+    
+    if estado == 'victoria':
+        juego.partidas_ganadas += 1
+    elif estado == 'derrota':
+        juego.partidas_perdidas += 1
+    elif estado == 'empate':
+        juego.partidas_empatadas += 1
 
-        juego.partidas_ganadas+=1
-        
-        db.session.add(juego)
-        db.session.commit()
-
-        partida = PartidasJuegosUsuario.query.get(id_jugador)
-        partida.final_partida = datetime.datetime.now()
-
-        db.session.add(partida)
-        db.session.commit()
-
-        return jsonify({'partidas_ganadas': juego.partidas_ganadas}), 201
-    except Exception as error: 
-        return jsonify({'mensaje': 'El juego no se pudo actualizar'}), 500
+    db.session.commit()
+    
+    return jsonify({'message': 'Partida actualizada y estadísticas actualizadas'}), 200
 
 
-@app.route('/jugadores/<id_jugador>/partidas_perdidas', methods=['POST'])
-def actualizar_partidas_perdidas(id_jugador):
-    try:
-        juego = JuegosDelUsuario.query.get(id_jugador)
-
-        juego.partidas_perdidas+=1
-
-        db.session.add(juego)
-        db.session.commit()
-
-        partida = PartidasJuegosUsuario.query.get(id_jugador)
-        partida.final_partida = datetime.datetime.now()
-
-        db.session.add(partida)
-        db.session.commit()
-
-        return jsonify({'partidas_perdidas': juego.partidas_perdidas}), 201
-    except Exception as error: 
-        return jsonify({'mensaje': 'El juego no se pudo actualizar'}), 500 
-
-
-@app.route('/jugadores/<id_jugador>/partidas_empatadas', methods=['POST'])
-def actualizar_partidas_perdidas(id_jugador):
-    try:
-        juego = JuegosDelUsuario.query.get(id_jugador)
-
-        juego.partidas_empatadas+=1
-
-        db.session.add(juego)
-        db.session.commit()
-
-        partida = PartidasJuegosUsuario.query.get(id_jugador)
-        partida.final_partida = datetime.datetime.now()
-
-        db.session.add(partida)
-        db.session.commit()
-
-        return jsonify({'partidas_empatadas': juego.partidas_empatadas}), 201
-    except Exception as error: 
-        return jsonify({'mensaje': 'El juego no se pudo actualizar'}), 500                 
+@app.route('/obtener_id_partida/<int:id_usuario>/<string:nombre_juego>', methods=['GET'])
+def obtener_id_partida(id_usuario, nombre_juego):
+    # Consulta para obtener la última partida para el usuario y juego específico
+    partida = PartidasJuegosUsuario.query.filter_by(id_usuario=id_usuario, nombre_juego=nombre_juego).order_by(PartidasJuegosUsuario.id.desc()).first()
+    
+    if partida:
+        id_partida = partida.id
+        return jsonify({'id_partida': id_partida}), 200
+    else:
+        return jsonify({'message': 'No se encontró ninguna partida para este usuario y juego'}), 404
 
 
 if __name__ == '__main__':

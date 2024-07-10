@@ -15,6 +15,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
         
         if (response.status === 200) {
             // Aquí puedes redirigir a la página de juego, estadísticas,etc.
+            localStorage.setItem('idUsuario', data.idUsuario);
             console.log("Bienvenido")
             window.location.href = './juego/index.html';
         } else {

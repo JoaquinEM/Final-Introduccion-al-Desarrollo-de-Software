@@ -26,6 +26,7 @@ class PartidasJuegosUsuario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_juego = db.Column(db.Integer, db.ForeignKey('Juegos_Del_Usuario.id'))
     id_usuario = db.Column(db.Integer, db.ForeignKey('Usuarios.id'))
+    nombre_juego = db.Column(db.String(255), nullable=False)
     estado_partida = db.Column(db.String(255), nullable=False)
     inicio_partida = db.Column(db.DateTime, default=datetime.datetime.now())
     final_partida = db.Column(db.DateTime, default=None)

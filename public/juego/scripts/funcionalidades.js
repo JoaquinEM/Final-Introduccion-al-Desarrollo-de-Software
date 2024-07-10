@@ -1,35 +1,3 @@
-let CRUZ = "X"
-let CIRCULO = "O"
-let VACIO = "-"
-let estado_inicial = "disponible"
-let estado_final = "ocupado"
-
-let partidaCount = 0; // el contador de partidas quizas nos sirve para las estadisticas
-
-function nuevaPartida() {
-    console.log(Date.parse())
-    partidaCount++;
-    if (partidaCount > 1){
-        borrarPartidaAnterior()
-    }
-    
-    const partidaHTML = `
-        <div class="tabla" id="partida_en_curso${partidaCount}">
-            
-            <button name="equis" id="0" onclick="agregarCruz(0, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="1" onclick="agregarCruz(1, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="2" onclick="agregarCruz(2, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="3" onclick="agregarCruz(3, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="4" onclick="agregarCruz(4, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="5" onclick="agregarCruz(5, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="6" onclick="agregarCruz(6, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="7" onclick="agregarCruz(7, ${partidaCount})" value="disponible">*</button>
-            <button name="equis" id="8" onclick="agregarCruz(8, ${partidaCount})" value="disponible">*</button>
-        </div>`;
-    document.getElementById('partida_en_curso').innerHTML += partidaHTML;
-    document.getElementById('estadistica').innerHTML = "";
-}
-
 function borrarPartidaAnterior(){
     document.getElementById('partida_en_curso').innerHTML = "";
 }
@@ -134,21 +102,6 @@ function agregarCruz(id){
 
 }
 
-function terminarJuego(ganador) {
-    if (ganador == "X"){
-        ganador = "¡Ganaste!"}
-    else if (ganador == "O"){
-        ganador = "¡Perdiste!"}
-    else {ganador = "¡Empate!"}
-    const estadisticaHTML = `
-        <br></br>
-        <h1>Partida Finalizada ${ganador}</h1>`;
-    document.getElementById("estadistica").innerHTML = estadisticaHTML;
-    console.log(document.getElementById("estadistica").innerHTML)
-    // Aca tenemos que agregar lógica adicional para finalizar el juego,
-    // como deshabilitar el tablero, mostrar un mensaje, mandar datos a estadisticas, etc.
-}
-
 function todasCasillasOcupadas(tablero) {
     return tablero.every(casilla => casilla !== VACIO)
 }
@@ -183,4 +136,50 @@ function confirmarVolver(){
             return
         }
     }else{window.location.href = "../index.html"}
+}
+
+
+function finalizarPartida(idPartida, estado, idUsuario, nombreJuego) {
+    fetch(`/finalizar_partida/${idPartida}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ estado: estado, id_usuario: idUsuario, nombre_juego: nombreJuego }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function obtenerIdPartida(idUsuario, nombreJuego, estado) {
+    fetch(`/obtener_id_partida/${idUsuario}/${nombreJuego}`)
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('No se pudo obtener el ID de la partida.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        let idPartida = data.id_partida;
+        finalizarPartida(idPartida, estado, idUsuario, nombreJuego);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+function finalizarPartidaActual(estado) {
+    let tablero = obtenerTablero();
+
+    if (tablero && !comprobarGanador(tablero, CRUZ) && !comprobarGanador(tablero, CIRCULO) && !todasCasillasOcupadas(tablero)) {
+        obtenerIdPartida(idUsuario, nombreJuego, estado);
+    } else {
+        console.log("No hay partida en curso para finalizar.");
+    }
 }

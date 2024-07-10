@@ -33,7 +33,8 @@
 
             <main id="partida">
                <article>
-                    <button id="botonPartida" onclick="nuevaPartida()">Nueva Partida</button>
+                    <h4 id="nombre-juego">Ta-Te-Ti</h4>
+                    <button id="botonPartida" onclick="nuevaPartida(); crearNuevaPartida();">Nueva Partida</button>
                </article>
             
                <div id="partida_en_curso">
@@ -41,36 +42,16 @@
                    <!--Aca se van a cargar las partidas-->
                 </div>
             </main>
-            <div id="estadistica"></div>    
+            <div id="resultado"></div>    
             
-        
-            <!--
-            <div class="tabla">
-
-                    <button name="equis" id="0" onclick="agregarCruz(0)" value="Disponible">*</button>
-                    <button name="equis" id="1" onclick="agregarCruz(1)" value="Disponible">*</button>
-                    <button name="equis" id="2" onclick="agregarCruz(2)" value="Disponible">*</button>
-
-                    <button name="equis" id="3" onclick="agregarCruz(3)" value="Disponible">*</button>
-                    <button name="equis" id="4" onclick="agregarCruz(4)" value="Disponible">*</button>
-                    <button name="equis" id="5" onclick="agregarCruz(5)" value="Disponible">*</button>
-   
-                    <button name="equis" id="6" onclick="agregarCruz(6)" value="Disponible">*</button>
-                    <button name="equis" id="7" onclick="agregarCruz(7)" value="Disponible">*</button>
-                    <button name="equis" id="8" onclick="agregarCruz(8)" value="Disponible">*</button>
-                
-            </div>
-            -->
         </section>
     </main>
 
     <aside></aside>
     <footer></footer>
 
-    <script>
-
-    </script>
-
-    <script src="juego.js"></script>
+    <script src="../scripts/inicializar_juego_back.js"></script>
+    <script src="./scripts/funcionalidades.js"></script>
+    <script src="./scripts/juego.js"></script>
 </body>
 </html>
