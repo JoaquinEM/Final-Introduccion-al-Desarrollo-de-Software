@@ -8,6 +8,9 @@ port = 5000
 app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
+print('Starting server...')
+db.init_app(app)
+
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
@@ -267,8 +270,7 @@ def obtener_id_partida(id_usuario, nombre_juego):
 
 
 if __name__ == '__main__':
-    print('Starting server...')
-    db.init_app(app)
+
     with app.app_context():
         db.create_all()
     print('Started...')
