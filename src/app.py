@@ -5,7 +5,8 @@ from models import db, PartidasJuegosUsuario, JuegosDelUsuario, Usuario
 
 app = Flask(__name__, static_folder='../public', static_url_path='')
 port = 5000
-app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 print('Starting server...')
@@ -274,4 +275,5 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     print('Started...')
-    app.run(host='0.0.0.0', debug=True, port=port)    
+    app.run(host='0.0.0.0', debug=True, port=5000) 
+    #app.run(host='0.0.0.0', debug=True, port=port)    

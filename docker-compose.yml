@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://tp1:123@db:5432/tp1intro
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: tp1
+      POSTGRES_PASSWORD: 123
+      POSTGRES_DB: tp1intro
+    ports:
+      - "5432:5432"
