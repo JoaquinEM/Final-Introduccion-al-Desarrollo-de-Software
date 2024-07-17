@@ -5,8 +5,8 @@ from models import db, PartidasJuegosUsuario, JuegosDelUsuario, Usuario
 
 app = Flask(__name__, static_folder='../public', static_url_path='')
 port = 5000
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-#app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 print('Starting server...')
@@ -108,8 +108,9 @@ def obtener_juego(idUsuario, nombreJuego):
 
 @app.route('/estadisticas', methods=['GET'])
 def get_estadisticas():
+    id_usuario = request.args.get('id_usuario')
     try:
-        juegos = JuegosDelUsuario.query.all()
+        juegos = JuegosDelUsuario.query.filter_by(id_usuario=id_usuario).all()
         juegos_data = []
         for juego in juegos:
             juego_data = {
@@ -123,24 +124,24 @@ def get_estadisticas():
             juegos_data.append(juego_data)
 
         
-        partidas = PartidasJuegosUsuario.query.all()
-        partidas_data = []
+        partidas = PartidasJuegosUsuario.query.filter_by(id_usuario=id_usuario).all()  # Filtra por ID de usuario
+        partidas_data = []  
         for partida in partidas:
 
             
             partida_data = {
                 'id': partida.id,
-                'id_juego': partida.nombre_juego,
+                'id_juego': partida.id_juego,
                 'id_usuario': partida.id_usuario,
-                'estado_partida': partida.partidas_ganadas, 
-                'inicio_partida': partida.partidas_perdidas,
-                'final_partida': partida.partidas_empatadas,
+                'estado_partida': partida.estado_partida, 
+                'inicio_partida': partida.inicio_partida,
+                'final_partida': partida.final_partida,
             }
             partidas_data.append(partida_data)
 
         return jsonify({'juegos': juegos_data, 'partidas': partidas_data}), 201
     except Exception as error:
-        return jsonify({'message:', 'No se pueden recuperar las estadisticas de los usuarios'}), 500
+        return jsonify({'message:': 'No se pueden recuperar las estadisticas de los usuarios'}), 500
 
 
 @app.route('/usuarios/<int:idUsuario>/juegos/<nombreJuego>', methods=['POST', 'GET'])
@@ -275,5 +276,5 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     print('Started...')
-    app.run(host='0.0.0.0', debug=True, port=5000) 
-    #app.run(host='0.0.0.0', debug=True, port=port)    
+    #app.run(host='0.0.0.0', debug=True, port=5000) 
+    app.run(host='0.0.0.0', debug=True, port=port)    

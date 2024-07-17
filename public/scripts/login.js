@@ -12,14 +12,18 @@ document.getElementById('login-form').addEventListener('submit', async function 
         });
 
         const data = await response.json(); //await
+        const loginMessage = document.getElementById('login-message');
         
         if (response.status === 200) {
             // Aquí puedes redirigir a la página de juego, estadísticas,etc.
             localStorage.setItem('idUsuario', data.idUsuario); //localStorage
             console.log("Bienvenido")
+            loginMessage.textContent = "Bienvenido";
+            loginMessage.className = 'mensaje-exito';
             window.location.href = './juego/index.html';
         } else {
-            document.getElementById('login-message').textContent = data.message; //textContent o InnerText?
+            loginMessage.textContent = data.message;
+            loginMessage.className = 'mensaje-error';
         }
     } catch (error) {
         console.error('Error:', error);
@@ -31,6 +35,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
     
     const nombre = document.getElementById('signup-username').value;
     const contraseña = document.getElementById('signup-password').value;
+
     
     try {
         const response = await fetch('/usuarios', { //await
@@ -40,11 +45,14 @@ document.getElementById('signup-form').addEventListener('submit', async function
         });
 
         const data = await response.json(); //await
+        const signupMessage = document.getElementById('signup-message');
         
         if (response.status === 201) {
-            document.getElementById('signup-message').textContent = 'Usuario creado correctamente.';
+            signupMessage.textContent = 'Usuario creado correctamente.';
+            signupMessage.className = 'mensaje-exito';
         } else {
-            document.getElementById('signup-message').textContent = data.message; //textContent o InnerText?
+            signupMessage.textContent = data.message; //textContent o InnerText?
+            signupMessage.className = 'mensaje-error';  
         }
     } catch (error) {
         console.error('Error:', error);

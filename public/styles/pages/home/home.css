@@ -1,18 +1,95 @@
 @import url(../../base/colores.css);
 @import url(../../base/fonts.css);
 
-html{
+html {
     box-sizing: border-box;
 }
 
-*{
+* {
     box-sizing: inherit;
     padding: 0;
     margin: 0;
 }
 
-body{
+body {
     background-color: var(--celeste);
+    font-family: 'TuFuente', sans-serif; 
 }
 
-/*Seccion LOGIN*/
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 90%; 
+    max-width: 400px; 
+    margin: 4rem auto; 
+    border-radius: 1rem; 
+    background-color: var(--azul); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;  
+}
+
+.form{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+h2 {
+    background-color: wheat;
+    text-align: center;
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    width: 100%;
+    margin: 0; 
+    padding: 1rem; 
+}
+
+label {
+    margin: 0.5rem 0; 
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%; 
+    padding: 0.75rem; 
+    margin: 0.5rem 0; 
+    border: 1px solid #ccc; 
+    border-radius: 0.5rem; 
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: var(--azul); 
+    outline: none; 
+}
+
+button {
+    margin: 1.5rem auto; 
+    width: 100%;
+    padding: 0.75rem; 
+    border: none; 
+    border-radius: 0.5rem; 
+    background-color: rgb(32, 165, 32); 
+    color: white; 
+    cursor: pointer; 
+    transition: background-color 0.3s; 
+}
+
+button:hover {
+    background-color: rgb(31, 191, 31); 
+}
+
+section:nth-last-child(2) {
+    margin-top: 5rem; 
+}
+
+.mensaje-exito {
+    color: green; 
+}
+
+.mensaje-error {
+    color: red;
+}
