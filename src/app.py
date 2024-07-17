@@ -5,8 +5,8 @@ from models import db, PartidasJuegosUsuario, JuegosDelUsuario, Usuario
 
 app = Flask(__name__, static_folder='../public', static_url_path='')
 port = 5000
-#app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
-app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+#app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 print('Starting server...')
@@ -134,8 +134,8 @@ def get_estadisticas():
                 'id_juego': partida.id_juego,
                 'id_usuario': partida.id_usuario,
                 'estado_partida': partida.estado_partida, 
-                'inicio_partida': partida.inicio_partida,
-                'final_partida': partida.final_partida,
+                'inicio_partida': partida.inicio_partida.isoformat(),
+                'final_partida': partida.final_partida.isoformat(),
             }
             partidas_data.append(partida_data)
 
@@ -276,5 +276,5 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     print('Started...')
-    #app.run(host='0.0.0.0', debug=True, port=5000) 
-    app.run(host='0.0.0.0', debug=True, port=port)    
+    app.run(host='0.0.0.0', debug=True, port=5000) 
+    #app.run(host='0.0.0.0', debug=True, port=port)    

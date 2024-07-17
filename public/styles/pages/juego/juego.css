@@ -90,3 +90,9 @@ h2{
     border-top-right-radius: 10em;
     border-bottom-left-radius: 10em;
 }
+
+#fin{
+    color: goldenrod;
+    font-weight: bold;
+    text-decoration: underline;
+}

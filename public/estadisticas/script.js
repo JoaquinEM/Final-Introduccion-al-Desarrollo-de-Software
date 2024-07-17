@@ -26,7 +26,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     data.partidas.forEach(partida => {
                         if (partida.id_usuario == idUsuario && partida.estado_partida != "pendiente") {
-
+                            console.log(partida.inicio_partida)
+                            console.log(partida.final_partida)
+                            
                             const tiempoJuego = calcularDiferenciaTiempo(partida.inicio_partida, partida.final_partida);
 
 
@@ -58,8 +60,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 function calcularDiferenciaTiempo(inicio, final) {
-    const inicioFecha = new Date(inicio);
-    const finalFecha = new Date(final);
+    const inicioFecha = new Date(inicio)
+    const finalFecha = new Date(final)
+
 
     const diferenciaMs = finalFecha - inicioFecha;
     const minutos = Math.floor(diferenciaMs / 60000);

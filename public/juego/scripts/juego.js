@@ -37,7 +37,8 @@ function nuevaPartida() {
             <button name="equis" id="6" onclick="agregarCruz(6, ${partidaCount})" value="disponible">*</button>
             <button name="equis" id="7" onclick="agregarCruz(7, ${partidaCount})" value="disponible">*</button>
             <button name="equis" id="8" onclick="agregarCruz(8, ${partidaCount})" value="disponible">*</button>
-        </div>`;
+        </div>
+        `;
     document.getElementById('partida_en_curso').innerHTML += partidaHTML;
     document.getElementById('resultado').innerHTML = "";
 }
@@ -58,8 +59,7 @@ function terminarJuego(ganador) {
     obtenerIdPartida(idUsuario, nombreJuego, estado);
 
     const estadisticaHTML = `
-        <br></br>
-        <h1>Partida Finalizada ${ganador}</h1>`;
+        <h1 id="fin">${ganador}</h1>`;
     document.getElementById("resultado").innerHTML = estadisticaHTML;
     console.log(document.getElementById("resultado").innerHTML)
     // Aca tenemos que agregar lógica adicional para finalizar el juego,

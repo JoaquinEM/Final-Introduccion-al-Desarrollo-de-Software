@@ -130,14 +130,26 @@ function confirmarVolver(){
     if (!tablero){window.location.href = "../index.html";return}
 
     if (verificarEstadoJuego(tablero) == "cierre") {
-        let cierre = window.confirm("¿Desea abandonar la partida? Se perderá todo el progreso.")
-        if (cierre){
-            window.location.href = "../index.html"
-            return
-        }
+        alert("Debes terminar la partida antes de ver las estadísticas.");
+        return;
+
     }else{window.location.href = "../index.html"}
+    
 }
 
+
+
+function irAEstadisticas() {
+    let tablero = obtenerTablero()
+    if (!tablero){window.location.href = "../estadisticas/index.html";return}
+
+    if (verificarEstadoJuego(tablero) == "cierre") {
+        alert("Debes terminar la partida antes de ver las estadísticas.");
+        return;
+
+    }else{window.location.href = "../estadisticas/index.html"}
+   
+}
 
 function finalizarPartida(idPartida, estado, idUsuario, nombreJuego) {
     fetch(`/finalizar_partida/${idPartida}`, {
