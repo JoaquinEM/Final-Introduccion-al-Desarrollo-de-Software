@@ -1,0 +1,9 @@
+footer{
+    display: flex;
+    justify-content: center;
+    height: 11rem;
+    color: #fede29f2;
+   
+    background-color: var(--azul);
+}
+

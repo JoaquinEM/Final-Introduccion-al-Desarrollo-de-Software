@@ -12,22 +12,33 @@ document.addEventListener("DOMContentLoaded", function() {
                     data.juegos.forEach(juego => {
                         if (juego.id_usuario == idUsuario) {
                             estadisticasHTML += `
-                                <h2>${juego.nombre_juego}</h2>
-                                <p>Partidas ganadas: ${juego.partidas_ganadas}</p>
-                                <p>Partidas perdidas: ${juego.partidas_perdidas}</p>
-                                <p>Partidas empatadas: ${juego.partidas_empatadas}</p>
+                                <article id="estadisticas_globales">
+                                    <h2>${juego.nombre_juego}</h2>
+                                    <p>Partidas ganadas: ${juego.partidas_ganadas}</p>
+                                    <p>Partidas perdidas: ${juego.partidas_perdidas}</p>
+                                    <p>Partidas empatadas: ${juego.partidas_empatadas}</p>
+                                </article>
                             `;
                         }
                     });
 
+                    let num_partida = 1;
+
                     data.partidas.forEach(partida => {
-                        if (partida.id_usuario == idUsuario) {
+                        if (partida.id_usuario == idUsuario && partida.estado_partida != "pendiente") {
+
+                            const tiempoJuego = calcularDiferenciaTiempo(partida.inicio_partida, partida.final_partida);
+
+
                             estadisticasHTML += `
-                                <h3>Partida ID: ${partida.id}</h3>
-                                <p>Estado de la partida: ${partida.estado_partida}</p>
-                                <p>Inicio de la partida: ${partida.inicio_partida}</p>
-                                <p>Final de la partida: ${partida.final_partida}</p>
+                                <article id="partida">
+                                    <p>${num_partida}</p>
+                                    <p>${partida.estado_partida}</p>
+                                    <p>${tiempoJuego}</p>
+                                    
+                                </article>
                             `;
+                            num_partida++;
                         }
                     });
 
@@ -44,3 +55,18 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('estadistica').innerText = 'Usuario no autenticado';
     }
 });
+
+
+function calcularDiferenciaTiempo(inicio, final) {
+    const inicioFecha = new Date(inicio);
+    const finalFecha = new Date(final);
+
+    const diferenciaMs = finalFecha - inicioFecha;
+    const minutos = Math.floor(diferenciaMs / 60000);
+    const segundos = ((diferenciaMs % 60000) / 1000).toFixed(0);
+
+    const minutosFormateados = minutos < 10 ? `0${minutos}` : minutos;
+    const segundosFormateados = segundos < 10 ? `0${segundos}` : segundos;
+
+    return `${minutosFormateados}:${segundosFormateados}`;
+}
