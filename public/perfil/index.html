@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="../styles/layout/header.css">
+    <link rel="stylesheet" href="../styles/pages/estadisticas/estadisticas.css">
+    <link rel="stylesheet" href="../styles/layout/aside.css">
+    
+    <title>Estadisticas</title>
+</head>
+<body>
+    <header class="Header">
+        <section>
+            <article>
+                <h1>PERFIL</h1>
+            </article>
+            <article>
+                <nav>
+                    <li><a class="link" href="../index.html">Inicio</a></li>
+                    <li><a class="link" href="../juego/index.html">Jugar</a></li>
+                </nav>
+            </article>
+    </header>
+    <main>
+        <section id="login-section">
+            <article class="card">
+                <h2>Perfil</h2>
+                <div class="Perfil">
+                </div>
+                <div class="form">
+                    <form id="login-form">
+                        <h2>Cambiar Contraseña</h2>
+                        <label for="login-username">Usuario:</label>
+                        <input type="text" id="login-username" name="username" required>
+                        <label for="login-password">Nueva Contraseña:</label>
+                        <input type="password" id="login-password" name="password" required>
+                        <button type="submit">Modificar Contraseña</button>
+                    </form>
+                    <div id="login-message"></div>
+                </div>
+            </article>
+        </section>
+    </main>
+    <aside>
+        <img src="../styles/media/images/estrellas.webp" alt="">
+    </aside>
+    <footer>
+        
+    </footer>
+
+    <script src="./perfil.js"></script>
+</body>
+</html>

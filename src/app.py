@@ -61,22 +61,47 @@ def nuevo_Usuario():
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el usuario'}), 500
     
-"""
-@app.route('/usuarios/<nombre_usuario>', methods=['GET'])
-def usuario(nombre_usuario):
+@app.route('/usuarios', methods=['PUT'])
+def modificar_Usuario():
     try:
-        usuario = Usuario.query.get(nombre_usuario)
+        data = request.json
+        nombre = data.get('nombre')
+        contraseña = data.get('contraseña')
 
-        usuario_data = {
+        # Verifica si ya existe un usuario con el mismo nombre
+        usuario = Usuario.query.filter_by(nombre_usuario=nombre).first()
+        if usuario:
+            # Modifica el usuario existente
+            usuario.contraseña_usuario = contraseña
+            db.session.commit()
+            
+            return jsonify({'usuario': {'id': usuario.id,
+                                        'nombre_usuario': usuario.nombre_usuario,
+                                        'contraseña_usuario': usuario.contraseña_usuario,
+                                        'fecha_creacion': usuario.fecha_creacion}}), 200 
+        else:
+            return jsonify({'mensaje': 'No existe un usuario con ese nombre'}), 404
+    except Exception as error:
+        return jsonify({'mensaje': 'No se pudo modificar el usuario'}), 500
+     
+
+@app.route('/usuarios/<id_usuario>', methods=['GET'])
+def usuario(id_usuario):
+    try:
+        usuario = Usuario.query.get(id_usuario)
+        if not usuario:
+            return jsonify({'mensaje': 'El usuario no existe'}), 404
+
+        return jsonify({'usuario_data' : {
             'id_usuario': usuario.id,
             'nombre_usuario': usuario.nombre_usuario,
             'contraseña_usuario': usuario.contraseña_usuario,
             'fecha_creacion': usuario.fecha_creacion
-        }
-        return jsonify(usuario_data), 201
+        }}), 200
+    
     except Exception as error:
-        return jsonify({'mensaje': 'El usuario no existe'}), 500
-"""
+        return jsonify({'mensaje': 'Error al obtener el usuario'}), 500
+
 
 @app.route('/usuarios/<id_usuario>', methods=['DELETE'])
 def eliminar_usuario(id_usuario):

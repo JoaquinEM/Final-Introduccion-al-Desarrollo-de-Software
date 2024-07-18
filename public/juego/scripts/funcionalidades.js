@@ -137,18 +137,15 @@ function confirmarVolver(){
     
 }
 
-
-
-function irAEstadisticas() {
+function irAPagina(pagina) {
     let tablero = obtenerTablero()
-    if (!tablero){window.location.href = "../estadisticas/index.html";return}
+    if (!tablero){window.location.href = `../${pagina}/index.html`;return}
 
     if (verificarEstadoJuego(tablero) == "cierre") {
         alert("Debes terminar la partida antes de ver las estadísticas.");
         return;
 
-    }else{window.location.href = "../estadisticas/index.html"}
-   
+    }else{window.location.href = `../${pagina}/index.html`}
 }
 
 function finalizarPartida(idPartida, estado, idUsuario, nombreJuego) {
