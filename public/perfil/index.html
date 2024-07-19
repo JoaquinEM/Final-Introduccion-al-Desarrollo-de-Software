@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="stylesheet" href="../styles/layout/header.css">
-    <link rel="stylesheet" href="../styles/pages/estadisticas/estadisticas.css">
+    <link rel="stylesheet" href="../styles/pages/perfil/perfil.css">
     <link rel="stylesheet" href="../styles/layout/aside.css">
     
     <title>Estadisticas</title>
@@ -18,22 +18,24 @@
             </article>
             <article>
                 <nav>
+                    <li><a class="link" href="../juego/index.html">Volver</a></li>
                     <li><a class="link" href="../index.html">Inicio</a></li>
-                    <li><a class="link" href="../juego/index.html">Jugar</a></li>
+                    <li><a class="link" href="../estadisticas/index.html">Estadisticas</a></li>
                 </nav>
             </article>
     </header>
     <main>
+        <article class="card">
+            <h2>Perfil</h2>
+            <ul id="info"></ul>
+        </article>
         <section id="login-section">
             <article class="card">
-                <h2>Perfil</h2>
-                <div class="Perfil">
-                </div>
                 <div class="form">
                     <form id="login-form">
                         <h2>Cambiar Contraseña</h2>
-                        <label for="login-username">Usuario:</label>
-                        <input type="text" id="login-username" name="username" required>
+                        <label for="login-username">Usuario:</label><br></br>
+                        <input type="text" id="login-username" name="username" required><br></br>
                         <label for="login-password">Nueva Contraseña:</label>
                         <input type="password" id="login-password" name="password" required>
                         <button type="submit">Modificar Contraseña</button>

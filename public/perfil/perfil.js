@@ -19,6 +19,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
             console.log("Bienvenido")
             loginMessage.textContent = "Bienvenido";
             loginMessage.className = 'mensaje-exito';
+            location.reload()
         } else {
             loginMessage.textContent = data.message;
             loginMessage.className = 'mensaje-error';
@@ -26,6 +27,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
     } catch (error) {
         console.error('Error:', error);
     }
+    window.location.href = window.location.href;
 });
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -35,8 +37,15 @@ document.addEventListener("DOMContentLoaded", function() {
         fetch(`/usuarios/${idUsuario}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.usuario_data.nombre_usuario)
-                console.log(data.usuario_data.contraseña_usuario)
+
+                let nombre = document.createElement("li")
+                let contraseña = document.createElement("li")
+
+                nombre.append(`Nombre: ${data.usuario_data.nombre_usuario}`)
+                contraseña.append(`Contraseña: ${data.usuario_data.contraseña_usuario}`)
+
+                let lista_datos = document.getElementById("info")
+                lista_datos.append(nombre,contraseña)
             })
             .catch(error => {
                 console.error('Error al obtener el usuario:', error);
