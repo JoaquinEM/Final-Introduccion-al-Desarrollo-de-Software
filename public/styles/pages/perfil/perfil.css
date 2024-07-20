@@ -30,6 +30,14 @@ body {
     overflow: hidden;  
 }
 
+ul,
+.form{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
 h2 {
     background-color: wheat;
     text-align: center;
@@ -40,17 +48,8 @@ h2 {
     padding: 1rem; 
 }
 
-li,
 label {
     margin: 0.5rem 0; 
-}
-
-ul
-.form{
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
 }
 
 input[type="text"],
@@ -82,4 +81,20 @@ button {
 
 button:hover {
     background-color: rgb(31, 191, 31); 
+}
+
+section:nth-last-child(2) {
+    margin-top: 5rem; 
+}
+
+#borrarCuenta{
+    display: flex;
+    margin-top: 1em;
+    background-color: red;
+    width: 20%;
+    justify-content: center;
+}
+
+li{
+    list-style: none;
 }

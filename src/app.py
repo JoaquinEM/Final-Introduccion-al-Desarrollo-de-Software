@@ -102,11 +102,20 @@ def usuario(id_usuario):
     except Exception as error:
         return jsonify({'mensaje': 'Error al obtener el usuario'}), 500
 
-
+#Primero se debe borrar registros relacionados a la clave foranea
 @app.route('/usuarios/<id_usuario>', methods=['DELETE'])
 def eliminar_usuario(id_usuario):
     try:
-        Usuario.query.filter_by(id=id_usuario).delete()
+        partidas = PartidasJuegosUsuario.query.filter_by(id_usuario=id_usuario).all()
+        for partida in partidas:
+            db.session.delete(partida)
+        juegos = JuegosDelUsuario.query.filter_by(id_usuario=id_usuario).all()
+        for juego in juegos:
+            db.session.delete(juego)
+        usuario = Usuario.query.get(id_usuario)
+        if usuario:
+            db.session.delete(usuario)
+            db.session.commit()
         return {'mensaje': 'El usuario se ha eliminado'}, 201
     except Exception as error:
         return {'mensaje': 'No se pudo eliminar el usuario'}, 500

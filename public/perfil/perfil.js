@@ -41,8 +41,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 let nombre = document.createElement("li")
                 let contraseña = document.createElement("li")
 
-                nombre.append(`Nombre: ${data.usuario_data.nombre_usuario}`)
-                contraseña.append(`Contraseña: ${data.usuario_data.contraseña_usuario}`)
+                nombre.append(`Nombre:      ${data.usuario_data.nombre_usuario}`)
+                contraseña.append(`Contraseña:      ${data.usuario_data.contraseña_usuario}`)
 
                 let lista_datos = document.getElementById("info")
                 lista_datos.append(nombre,contraseña)
@@ -53,3 +53,21 @@ document.addEventListener("DOMContentLoaded", function() {
             });
     }
 });
+
+function borrarCuenta(){
+    if(!confirm("¿Seguro de eliminar tu usuario?")){return}
+    const idUsuario = localStorage.getItem('idUsuario')
+    if (idUsuario){
+        fetch(`/usuarios/${idUsuario}`, {method : "DELETE"})
+            .then(response => response.json())
+            .then(data => {
+                if (data.mensaje == 'El usuario se ha eliminado'){
+                    alert("Tu usuario fue eliminado")
+                    localStorage.removeItem('idUsuario')
+                    window.location.href = "../index.html"
+                }else{alert("No fue posible eliminar el usuario")}
+                
+            })
+            .catch(error => {console.error('Error al eliminar el usuario:', error);});
+    }
+}
