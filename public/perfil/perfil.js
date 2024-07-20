@@ -1,13 +1,18 @@
 document.getElementById('login-form').addEventListener('submit', async function (e) { //async function
     e.preventDefault();
-    const nombre = document.getElementById('login-username').value;
+    const idUsuario = localStorage.getItem('idUsuario'); 
     const contraseña = document.getElementById('login-password').value;
     
+    if (!idUsuario) {
+        alert("No se ha encontrado el ID del usuario.");
+        return;
+    }
+
     try {
-        const response = await fetch('/usuarios', { //await
+        const response = await fetch(`/usuarios/${idUsuario}`, { //await
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, contraseña })
+            body: JSON.stringify({ contraseña })
         });
 
         const data = await response.json(); //await
@@ -15,7 +20,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
         
         if (response.status === 200) {
             // Aquí puedes redirigir a la página de juego, estadísticas,etc.
-            localStorage.setItem('idUsuario', usuario.id_usuario); //localStorage
+            localStorage.setItem('idUsuario', idUsuario); //localStorage
             console.log("Bienvenido")
             loginMessage.textContent = "Bienvenido";
             loginMessage.className = 'mensaje-exito';

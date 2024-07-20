@@ -61,15 +61,17 @@ def nuevo_Usuario():
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el usuario'}), 500
     
-@app.route('/usuarios', methods=['PUT'])
-def modificar_Usuario():
+@app.route('/usuarios/<int:id>', methods=['PUT'])
+def modificar_Usuario(id):
     try:
         data = request.json
-        nombre = data.get('nombre')
         contraseña = data.get('contraseña')
 
+        if not contraseña:
+            return jsonify({'mensaje': 'No se proporcionó contraseña'}), 400
+    
         # Verifica si ya existe un usuario con el mismo nombre
-        usuario = Usuario.query.filter_by(nombre_usuario=nombre).first()
+        usuario = Usuario.query.get(id)
         if usuario:
             # Modifica el usuario existente
             usuario.contraseña_usuario = contraseña

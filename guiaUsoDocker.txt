@@ -1,9 +1,9 @@
 Cada vez que se haga una modificacion, tenes que en ambas terminales (postgres y docker), cerrar (ctrl+c o exit) e ir a la terminal de docker y correr el siguiente comando
-sudo docker compose build
-sudo docker compose up
+sudo docker-compose build
+sudo docker-compose up
 Luego en la otra terminal:
 sudo docker ps
 sudo docker ps
 copiar el id de postgres:latest
-sudo docker exec -it <id>
+sudo docker exec -it <id> bash
 psql -U tp1 -d tp1intro -W
