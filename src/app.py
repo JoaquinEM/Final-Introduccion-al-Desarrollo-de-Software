@@ -3,19 +3,58 @@ import os
 from flask import Flask, request, jsonify, send_from_directory
 from models import db, PartidasJuegosUsuario, JuegosDelUsuario, Usuario
 
+# CONFIGURACION
+
+# Crea una instancia de la aplicación Flask. El argumento __name__ permite a Flask ubicar la raíz del proyecto. 
 app = Flask(__name__, static_folder='../public', static_url_path='')
+
+# Define el puerto en el que la aplicación Flask escuchará las solicitudes.
 port = 5000
+
+# Configura la URI de la base de datos para SQLAlchemy usando una variable de entorno. 
+# `os.getenv('DATABASE_URL')` busca el valor de la variable de entorno 'DATABASE_URL' que contiene la cadena de conexión a la base de datos.
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+
 #app.config['SQLALCHEMY_DATABASE_URI']= 'postgresql+psycopg2://tp1:123@localhost:5432/tp1intro'
+
+# Desactiva la notificación de modificaciones en las bases de datos de SQLAlchemy. 
+# Esto evita la generación de eventos de seguimiento que no son necesarios para la mayoría de las aplicaciones.
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 
 print('Starting server...')
 db.init_app(app)
 
+
+
+# END-POINTS
+
+'''
+Pre:
+    1. La aplicación Flask debe estar configurada correctamente y en ejecución.
+    2. El directorio `static_folder` de Flask está correctamente configurado y contiene el archivo `index.html`.
+
+Post:
+    1. El servidor responderá con el archivo `index.html` cuando se acceda a la ruta `/`.
+    2. El archivo `index.html` se sirve correctamente desde el directorio estático especificado.
+'''
+
 @app.route('/')
 def index():
     return send_from_directory(app.static_folder, 'index.html')
 
+
+'''
+Pre:
+    1. `request.json` debe estar disponible para obtener datos JSON.
+    2. La base de datos debe estar configurada y accesible.
+    3. La tabla `Usuario` debe tener columnas `id`, `nombre_usuario`, `contraseña_usuario` y `fecha_creacion`.
+
+Post
+    1. Retorna mensaje de éxito y `idUsuario` con código 200 si credenciales son correctas.
+    2. Retorna mensaje de error de credenciales incorrectas con código 401 si la contraseña es incorrecta.
+    3. Retorna mensaje de usuario no encontrado con código 404 si el usuario no existe.
+
+'''
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -25,7 +64,6 @@ def login():
 
     usuario = Usuario.query.filter_by(nombre_usuario=nombre).first()
 
-    # Lógica de autenticación (simplificada)
     if usuario:
         # Si el usuario existe, verifica la contraseña
         if usuario.contraseña_usuario == contraseña:
@@ -36,6 +74,19 @@ def login():
         return jsonify({'message': 'Usuario no encontrado'}), 404
     
 
+
+'''
+Pre:
+    1. `request.json` debe estar disponible para obtener datos JSON.
+    2. La base de datos debe estar configurada y accesible.
+    3. La tabla `Usuario` debe tener columnas `id`, `nombre_usuario`, `contraseña_usuario` y `fecha_creacion`.
+
+Post:
+    1. Retorna detalles del nuevo usuario con código 201 si se crea correctamente.
+    2. Retorna mensaje de error con código 400 si ya existe un usuario con el mismo nombre.
+    3. Retorna mensaje de error con código 500 si ocurre un error durante la creación.
+
+'''
 
 @app.route('/usuarios', methods=['POST'])
 def nuevo_Usuario():
@@ -61,6 +112,22 @@ def nuevo_Usuario():
     except Exception as error:
         return jsonify({'mensaje': 'no se pudo crear el usuario'}), 500
     
+
+'''
+Pre:
+    1. `request.json` debe estar disponible para obtener datos JSON.
+    2. La base de datos debe estar configurada y accesible.
+    3. La tabla `Usuario` debe tener columnas necesarias.
+    4. Debe existir un usuario con el `id` proporcionado.
+
+Post:
+    1. Retorna los detalles del usuario modificado con código 200 si se modifica correctamente.
+    2. Retorna mensaje de error con código 400 si no se proporciona contraseña.
+    3. Retorna mensaje de error con código 404 si no existe un usuario con el `id` proporcionado.
+    4. Retorna mensaje de error con código 500 si ocurre un error durante la modificación.
+
+'''
+
 @app.route('/usuarios/<int:id>', methods=['PUT'])
 def modificar_Usuario(id):
     try:
@@ -86,6 +153,17 @@ def modificar_Usuario(id):
     except Exception as error:
         return jsonify({'mensaje': 'No se pudo modificar el usuario'}), 500
      
+'''
+Pre:
+    1. `id_usuario` debe ser un identificador válido para un usuario.
+    2. La base de datos debe estar configurada y accesible.
+    3. La tabla `Usuario` debe tener las columnas `id`, `nombre_usuario`, `contraseña_usuario`, y `fecha_creacion`.
+
+Post:
+    1. Retorna los detalles del usuario con código 200 si el usuario existe.
+    2. Retorna mensaje de error con código 404 si el usuario no existe.
+    3. Retorna mensaje de error con código 500 si ocurre un error al obtener el usuario.
+'''
 
 @app.route('/usuarios/<id_usuario>', methods=['GET'])
 def usuario(id_usuario):
@@ -103,6 +181,20 @@ def usuario(id_usuario):
     
     except Exception as error:
         return jsonify({'mensaje': 'Error al obtener el usuario'}), 500
+
+
+
+'''
+Pre:
+    1. `id_usuario` debe ser un identificador válido para un usuario.
+    2. Las tablas `PartidasJuegosUsuario` y `JuegosDelUsuario` deben tener una columna `id_usuario`.
+    3. La base de datos debe estar configurada y accesible.
+
+Post:
+    1. El usuario y todos los registros relacionados se eliminan con código 201 si la operación es exitosa.
+    2. Retorna mensaje de error con código 500 si ocurre un error al eliminar el usuario o registros relacionados.
+
+'''
 
 #Primero se debe borrar registros relacionados a la clave foranea
 @app.route('/usuarios/<id_usuario>', methods=['DELETE'])
@@ -123,6 +215,20 @@ def eliminar_usuario(id_usuario):
         return {'mensaje': 'No se pudo eliminar el usuario'}, 500
 
 
+'''
+Pre:
+    1. `idUsuario` debe ser un identificador válido de un usuario.
+    2. `nombreJuego` debe ser una cadena de texto representando el nombre del juego.
+    3. La base de datos debe estar configurada y accesible.
+    4. La tabla `JuegosDelUsuario` debe tener las columnas `id_usuario` y `nombre_juego`.
+
+Post:
+    1. Retorna un objeto JSON con los detalles del juego con código 200 si el juego existe.
+    2. Retorna un mensaje de error con código 404 si el juego no se encuentra.
+    3. Retorna un mensaje de error con código 500 si ocurre un error durante la consulta.
+
+'''
+
 @app.route('/usuarios/<int:idUsuario>/juegos/<string:nombreJuego>', methods=['GET'])
 def obtener_juego(idUsuario, nombreJuego):
     try:
@@ -141,6 +247,20 @@ def obtener_juego(idUsuario, nombreJuego):
             return jsonify({'message': 'Juego no encontrado'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+
+'''
+Pre:
+    1. `id_usuario` debe ser un identificador válido de un usuario.
+    2. La base de datos debe estar configurada y accesible.
+    3. La tabla `JuegosDelUsuario` debe contener información sobre los juegos del usuario.
+    4. La tabla `PartidasJuegosUsuario` debe contener información sobre las partidas del usuario.
+
+Post:
+    1. Retorna un objeto JSON con las estadísticas de juegos y partidas del usuario con código 201 si la consulta es exitosa.
+    2. Retorna un mensaje de error con código 500 si ocurre un error durante la consulta.
+
+'''
 
 @app.route('/estadisticas', methods=['GET'])
 def get_estadisticas():
@@ -179,6 +299,26 @@ def get_estadisticas():
     except Exception as error:
         return jsonify({'message:': 'No se pueden recuperar las estadisticas de los usuarios'}), 500
 
+
+'''
+Pre:
+    1. `idUsuario` debe ser un identificador válido de un usuario.
+    2. `nombreJuego` debe ser el nombre del juego a consultar o crear.
+    3. La base de datos debe estar configurada y accesible.
+    4. La tabla `JuegosDelUsuario` debe existir y estar correctamente configurada.
+
+Post:
+    1. POST: 
+        - Si el juego ya existe, retorna un mensaje con los detalles del juego y código 200.
+        - Si el juego no existe, crea el juego para el usuario, retorna los detalles del nuevo juego y código 201.
+        - Retorna un mensaje de error con código 500 si ocurre un error durante el proceso.
+
+    2. GET:
+        - Si el juego existe, retorna los detalles del juego y código 200.
+        - Si el juego no existe, retorna un objeto vacío y código 404.
+        - Retorna un mensaje de error con código 500 si ocurre un error durante el proceso.
+
+'''
 
 @app.route('/usuarios/<int:idUsuario>/juegos/<nombreJuego>', methods=['POST', 'GET'])
 def juegos_usuario(idUsuario, nombreJuego):
@@ -235,6 +375,21 @@ def juegos_usuario(idUsuario, nombreJuego):
             return jsonify({'error': str(e)}), 500
 
 
+'''
+Pre:
+    1. `idUsuario` debe ser un identificador válido de un usuario.
+    2. `nombreJuego` debe ser el nombre del juego que se está iniciando.
+    3. La base de datos debe estar configurada y accesible.
+    4. Las tablas `JuegosDelUsuario` y `PartidasJuegosUsuario` deben existir y estar correctamente configuradas.
+
+Post:
+    1. Si el juego no existe para el usuario, se crea un nuevo juego y se asocia con el usuario.
+    2. Se crea una nueva partida asociada al juego (existente o recién creado).
+    3. Retorna los detalles de la partida creada, incluyendo `id_partida`, `id_juego`, `id_usuario`, `nombre_juego`, `estado_partida`, `inicio_partida`, y `final_partida`.
+    4. Retorna un mensaje de error con código 500 si ocurre un error durante el proceso.
+
+'''
+
 @app.route('/jugar/<int:idUsuario>', methods=['POST'])
 def jugar(idUsuario):
     data = request.get_json()
@@ -264,6 +419,25 @@ def jugar(idUsuario):
         'final_partida': partida.final_partida
     })
 
+
+
+'''
+Pre:
+    1. `id_partida` debe ser un identificador válido de una partida existente.
+    2. `estado` debe ser uno de los valores válidos ('victoria', 'derrota', 'empate').
+    3. `id_usuario` debe ser un identificador válido de un usuario.
+    4. `nombre_juego` debe ser el nombre del juego asociado a la partida.
+    5. La base de datos debe estar configurada y accesible.
+    6. Las tablas `PartidasJuegosUsuario` y `JuegosDelUsuario` deben existir y estar correctamente configuradas.
+
+Post:
+    1. La partida con `id_partida` se actualiza con el nuevo estado y la fecha de finalización.
+    2. Las estadísticas del juego asociado se actualizan según el estado de la partida.
+    3. Retorna un mensaje de éxito si la operación es exitosa.
+    4. Retorna un mensaje de error con código 404 si la partida o el juego no se encuentran.
+    5. Retorna un mensaje de error con código 500 si ocurre un error durante el proceso.
+
+'''
 
 @app.route('/finalizar_partida/<int:id_partida>', methods=['POST'])
 def finalizar_partida(id_partida):
@@ -295,6 +469,20 @@ def finalizar_partida(id_partida):
     return jsonify({'message': 'Partida actualizada y estadísticas actualizadas'}), 200
 
 
+'''
+Pre:
+    1. `id_usuario` debe ser un identificador válido de un usuario existente.
+    2. `nombre_juego` debe ser el nombre del juego para el cual se desea obtener la partida.
+    3. La base de datos debe estar configurada y accesible.
+    4. La tabla `PartidasJuegosUsuario` debe existir y estar correctamente configurada.
+
+Post:
+    1. Retorna el `id_partida` de la última partida asociada al usuario y al juego especificado si existe.
+    2. Retorna un mensaje de error con código 404 si no se encuentra ninguna partida para el usuario y el juego especificado.
+    3. Retorna un mensaje de error con código 500 si ocurre un error durante la consulta.
+
+'''
+
 @app.route('/obtener_id_partida/<int:id_usuario>/<string:nombre_juego>', methods=['GET'])
 def obtener_id_partida(id_usuario, nombre_juego):
     # Consulta para obtener la última partida para el usuario y juego específico
@@ -312,5 +500,4 @@ if __name__ == '__main__':
     with app.app_context():
         db.create_all()
     print('Started...')
-    app.run(host='0.0.0.0', debug=True, port=5000) 
-    #app.run(host='0.0.0.0', debug=True, port=port)    
+    app.run(host='0.0.0.0', debug=True, port=port)    

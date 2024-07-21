@@ -1,4 +1,17 @@
-// public/estadisticas/script.js
+/*
+Pre:
+    1. Debe estar el documento HTML cargado.
+    2. Debe existir`idUsuario` en `localStorage`.
+    3. Debe existir el Endpoint `/estadisticas` que devuelve datos JSON.
+    4. Debe existir la Función `calcularDiferenciaTiempo`.
+    5. En el html debe haber un elemento con el id `estadistica`.
+ 
+Post:
+    1. Muestra estadísticas de juegos y partidas del usuario.
+    2. Si no hay datos, muestra "No se encontraron estadísticas".
+    3. Si hay error, muestra "Error al cargar las estadísticas".
+    4. Si no hay `idUsuario`, muestra "Usuario no autenticado".
+*/
 document.addEventListener("DOMContentLoaded", function() {
     const idUsuario = localStorage.getItem('idUsuario'); // Asumiendo que el ID del usuario se almacena en el localStorage
 
@@ -59,6 +72,15 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+
+/*
+Pre:
+    1. `inicio` y `final` deben ser variables de tipo `Date time`.
+
+Post:
+    1. Devuelve una cadena de texto en formato `mm:ss` que representa la diferencia de tiempo entre `inicio` y `final`.
+    2. El formato será `minutos:segundos`, con minutos y segundos siempre mostrados con dos dígitos.
+*/
 function calcularDiferenciaTiempo(inicio, final) {
     const inicioFecha = new Date(inicio)
     const finalFecha = new Date(final)

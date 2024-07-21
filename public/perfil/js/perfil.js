@@ -1,3 +1,16 @@
+
+/*
+Pre:
+    1. Los elementos del formulario deben existir en el HTML.
+    2. `idUsuario` debe estar almacenado en el `localStorage`.
+
+Post:
+    1. Envía una solicitud al servidor con la contraseña.
+    2. Muestra un mensaje de éxito si la solicitud es exitosa y recarga la página cambiando la contaceña.
+    3. Muestra un mensaje de error si la solicitud falla.
+
+*/
+
 document.getElementById('login-form').addEventListener('submit', async function (e) { //async function
     e.preventDefault();
     const idUsuario = localStorage.getItem('idUsuario'); 
@@ -35,6 +48,21 @@ document.getElementById('login-form').addEventListener('submit', async function 
     window.location.href = window.location.href;
 });
 
+
+
+/*
+Pre:
+    1. El `idUsuario` debe estar almacenado en el `localStorage`.
+    2. El elemento con ID `info` debe existir en el HTML.
+
+Post:
+    1. Si el `idUsuario` está disponible, realiza una solicitud para obtener datos del usuario.
+    2. Muestra el nombre y la contraseña del usuario en una lista dentro del elemento con ID `info`.
+    3. Muestra un mensaje de error si la solicitud falla o no se puede cargar el usuario.
+
+
+*/
+
 document.addEventListener("DOMContentLoaded", function() {
     const idUsuario = localStorage.getItem('idUsuario'); // Asumiendo que el ID del usuario se almacena en el localStorage
     console.log(idUsuario)
@@ -59,6 +87,18 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+
+/*
+Pre
+    1. El `idUsuario` debe estar almacenado en el `localStorage`.
+    2. El usuario debe confirmar la eliminación mediante un cuadro de diálogo.
+
+Post:
+    1. Si el usuario confirma y el `idUsuario` está disponible, se realiza una solicitud DELETE para eliminar el usuario y todos sus datos relacionados.
+    2. Si la eliminación es exitosa, se muestra un mensaje de éxito, se elimina el `idUsuario` del `localStorage`, y se redirige al usuario a la página principal.
+    3. Si la eliminación falla, se muestra un mensaje de error.
+
+*/
 function borrarCuenta(){
     if(!confirm("¿Seguro de eliminar tu usuario?")){return}
     const idUsuario = localStorage.getItem('idUsuario')
