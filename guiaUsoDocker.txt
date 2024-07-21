@@ -1,9 +1,32 @@
 Cada vez que se haga una modificacion, tenes que en ambas terminales (postgres y docker), cerrar (ctrl+c o exit) e ir a la terminal de docker y correr el siguiente comando
-sudo docker-compose build
-sudo docker-compose up
-Luego en la otra terminal:
-sudo docker ps
-sudo docker ps
-copiar el id de postgres:latest
-sudo docker exec -it <id> bash
-psql -U tp1 -d tp1intro -W
+
+
+Pasos: 
+
+Por cada modificacion:
+
+    sudo docker-compose build
+
+Para levantar el proyecto:
+
+    sudo docker-compose up
+
+    Si falla:
+
+        sudo lsof -i :5432
+        sudo kill -9 <PID>
+        sudo docker-compose up
+    
+
+En otra terminal para abrir postgresql:
+
+    sudo docker ps
+    (copiar el id de postgres:latest)
+
+    sudo docker exec -it <id> bash
+
+    psql -U tp1 -d tp1intro -W
+
+    123
+
+

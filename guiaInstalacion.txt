@@ -1,5 +1,8 @@
 sudo apt install docker.io
 sudo apt install docker-compose
+
+
+
 sudo docker-compose build
 sudo lsof -i :5432
 sudo kill -9 <PID>
