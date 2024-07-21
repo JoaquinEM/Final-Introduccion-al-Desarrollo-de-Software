@@ -65,7 +65,7 @@ Post:
 
 document.addEventListener("DOMContentLoaded", function() {
     const idUsuario = localStorage.getItem('idUsuario'); // Asumiendo que el ID del usuario se almacena en el localStorage
-    console.log(idUsuario)
+    //console.log(idUsuario)
     if (idUsuario) {
         fetch(`/usuarios/${idUsuario}`)
             .then(response => response.json())

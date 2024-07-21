@@ -405,7 +405,8 @@ def jugar(idUsuario):
         db.session.commit()
 
     # Creo la nueva partida asociada al juego encontrado o creado
-    partida = PartidasJuegosUsuario(id_juego=juego.id, id_usuario=idUsuario,nombre_juego = nombreJuego, estado_partida = 'pendiente')
+    inicio_partida = datetime.datetime.now()
+    partida = PartidasJuegosUsuario(id_juego=juego.id, id_usuario=idUsuario,nombre_juego = nombreJuego, estado_partida = 'pendiente', inicio_partida = inicio_partida)
     db.session.add(partida)
     db.session.commit()
 

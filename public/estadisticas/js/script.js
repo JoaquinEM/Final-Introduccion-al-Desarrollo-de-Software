@@ -87,8 +87,11 @@ function calcularDiferenciaTiempo(inicio, final) {
 
 
     const diferenciaMs = finalFecha - inicioFecha;
+
+    
+
     const minutos = Math.floor(diferenciaMs / 60000);
-    const segundos = ((diferenciaMs % 60000) / 1000).toFixed(0);
+    const segundos = Math.floor((diferenciaMs % 60000) / 1000);
 
     const minutosFormateados = minutos < 10 ? `0${minutos}` : minutos;
     const segundosFormateados = segundos < 10 ? `0${segundos}` : segundos;

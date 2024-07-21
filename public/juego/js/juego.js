@@ -26,7 +26,7 @@ Post:
 */
 
 function nuevaPartida() {
-    console.log(Date.parse())
+    //console.log(Date.parse())
 
     partidaEnCurso = true
     partidaCount++;
@@ -87,5 +87,5 @@ function terminarJuego(ganador) {
     const estadisticaHTML = `
         <h1 id="fin">${ganador}</h1>`;
     document.getElementById("resultado").innerHTML = estadisticaHTML;
-    console.log(document.getElementById("resultado").innerHTML)
+    //console.log(document.getElementById("resultado").innerHTML)
 }

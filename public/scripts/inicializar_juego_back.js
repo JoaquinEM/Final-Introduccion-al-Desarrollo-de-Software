@@ -100,7 +100,6 @@ async function crearNuevaPartida() {//async
         const partida = await nuevaPartidaResponse.json();//await
         console.log('Partida creada:', partida);
     } catch (error) {
-        console.log("LLEGUE AL ERROR")
         console.error('Error:', error.message);
         alert('Hubo un error al crear la partida.');
     }
